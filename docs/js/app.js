@@ -646,12 +646,8 @@ function buildWhatsAppMessage(name, phone, city, delivery) {
   cart.forEach(item => {
     if (item.isCurva) {
       const subtotal   = item.unitPrice * item.totalInCurve * item.qty;
-      const breakdown  = item.curveData.sizes.map((s, i) => `${s}×${item.curveData.curve[i]}`).join(' | ');
       const curvaLabel = item.qty === 1 ? '1 curva' : `${item.qty} curvas`;
-      lines.push(`• ${curvaLabel} × ${item.name} (${item.sku})`);
-      lines.push(`  Curva: ${breakdown} (${item.totalInCurve} prendas/curva)`);
-      lines.push(`  Colores: surtido (${item.colors.join(', ')})`);
-      lines.push(`  Subtotal: ${formatMoney(subtotal)}`);
+      lines.push(`• ${item.name} (${item.sku}) — ${curvaLabel} — ${formatMoney(subtotal)}`);
     } else {
       lines.push(`• ${item.qty}× ${item.name} (${item.sku})`);
       lines.push(`  Talle: ${item.size} | Color: ${item.color}`);
