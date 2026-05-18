@@ -1,6 +1,6 @@
-/* ============================================================
-   ÉPICO INDUMENTARIA — styles.css
-   Paleta: verde lima #39FF14, azul eléctrico #1E90FF, negro #0a0a0a
+﻿/* ============================================================
+   Ã‰PICO INDUMENTARIA â€” styles.css
+   Paleta: verde lima #39FF14, azul elÃ©ctrico #1E90FF, negro #0a0a0a
    ============================================================ */
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1007,7 +1007,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 
 @media (max-width: 480px) {
-  .products-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .products-grid { grid-template-columns: 1fr; gap: 12px; }
   .catalog-header { flex-direction: column; align-items: flex-start; }
   .contact-ctas { flex-direction: column; }
   .btn-wapp-big, .btn-ig-big { width: 100%; justify-content: center; }
