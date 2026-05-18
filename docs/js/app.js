@@ -109,17 +109,22 @@ function updateCardPrice(card, basePrice) {
   const priceOrig    = card.querySelector('.price-original');
   const priceCurrent = card.querySelector('.price-current');
   const discTag      = card.querySelector('.discount-tag');
+  const savingTag    = card.querySelector('.saving-tag');
 
   priceCurrent.textContent = formatMoney(finalPrice);
 
   if (ct.discount > 0) {
+    const saving = basePrice - finalPrice;
     priceOrig.textContent = formatMoney(basePrice);
     priceOrig.style.display = 'inline';
     discTag.textContent = `−${ct.discount * 100}%`;
     discTag.style.display = 'inline';
+    savingTag.textContent = `Ahorrás ${formatMoney(saving)}`;
+    savingTag.style.display = 'inline';
   } else {
     priceOrig.style.display = 'none';
     discTag.style.display = 'none';
+    savingTag.style.display = 'none';
   }
 }
 
@@ -174,6 +179,7 @@ function buildProductCard(p) {
         <span class="price-current">${formatMoney(finalPrice)}</span>
         <span class="discount-tag" style="display:${ct.discount > 0 ? 'inline' : 'none'}">−${ct.discount * 100}%</span>
       </div>
+      <span class="saving-tag" style="display:${ct.discount > 0 ? 'inline' : 'none'}">Ahorrás ${formatMoney(p.price - finalPrice)}</span>
       <div class="variant-group">
         <label>Color: <strong class="selected-color-name">${p.colors[0].name}</strong></label>
         <div class="color-swatches">${colorSwatches}</div>
@@ -316,8 +322,24 @@ function renderCart() {
     btn.addEventListener('click', () => removeFromCart(btn.dataset.key));
   });
 
-  const total = getCartTotal();
+  const total    = getCartTotal();
+  const baseTotal = cart.reduce((s, i) => s + i.basePrice * i.qty, 0);
+  const saving   = baseTotal - total;
   cartTotalEl.textContent = formatMoney(total);
+
+  let savingRow = document.getElementById('cartSavingRow');
+  if (saving > 0) {
+    if (!savingRow) {
+      savingRow = document.createElement('div');
+      savingRow.id = 'cartSavingRow';
+      savingRow.className = 'cart-saving-row';
+      cartTotalEl.closest('.cart-total-row').insertAdjacentElement('afterend', savingRow);
+    }
+    savingRow.innerHTML = `<span>Tu ahorro</span><span class="cart-saving-amount">−${formatMoney(saving)}</span>`;
+    savingRow.style.display = 'flex';
+  } else if (savingRow) {
+    savingRow.style.display = 'none';
+  }
 
   // Minimum validation for curva-abierta
   if (currentClientType === 'curva-abierta' && total < MINIMUM_MAYORISTA) {

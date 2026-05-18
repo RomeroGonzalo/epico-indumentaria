@@ -541,6 +541,17 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   border-radius: 20px;
 }
 
+.saving-tag {
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--green);
+  background: rgba(57,255,20,.1);
+  border: 1px solid rgba(57,255,20,.25);
+  border-radius: 6px;
+  padding: 3px 8px;
+  width: fit-content;
+}
+
 .variant-group { display: flex; flex-direction: column; gap: 6px; }
 .variant-group label { font-size: .75rem; color: var(--muted); font-weight: 600; }
 
@@ -828,6 +839,18 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   font-size: 1rem;
 }
 .cart-total { color: var(--green); font-size: 1.2rem; }
+
+.cart-saving-row {
+  justify-content: space-between;
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--green);
+  background: rgba(57,255,20,.08);
+  border: 1px solid rgba(57,255,20,.2);
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+.cart-saving-amount { font-weight: 800; }
 
 .cart-min-warning {
   padding: 10px 14px;
