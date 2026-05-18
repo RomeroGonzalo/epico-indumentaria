@@ -409,7 +409,7 @@ function getCartTotal() {
     const mult = item.isCurva ? item.totalInCurve : 1;
     return sum + item.unitPrice * mult * item.qty;
   }, 0);
-  // Descuento volumen para minorista: 10% comprando 5+ prendas
+  // Descuento volumen para minorista: 10% comprando 4+ prendas
   if (currentClientType === 'minorista') {
     const totalQty = cart.reduce((s, i) => s + i.qty, 0);
     if (totalQty >= CLIENT_TYPES.minorista.bulkMinQty) {
@@ -676,7 +676,7 @@ function buildWhatsAppMessage(name, phone, city, delivery) {
     if (totalQty >= CLIENT_TYPES.minorista.bulkMinQty) {
       const saved = baseTotal - total;
       lines.push(`💰 Precio lista: ${formatMoney(baseTotal)}`);
-      lines.push(`🎁 Descuento volumen (10% por 5+ prendas): −${formatMoney(saved)}`);
+      lines.push(`🎁 Descuento volumen (10% por 4+ prendas): −${formatMoney(saved)}`);
     }
   }
 
