@@ -1,6 +1,4 @@
 // Catálogo de productos — Épico Indumentaria
-// Reemplazá el campo `image` con la ruta real cuando cargues las fotos.
-// El campo `emoji` se usa como placeholder visual hasta tener las imágenes.
 
 const PRODUCTS = [
   // -------- HOMBRE --------
@@ -17,6 +15,7 @@ const PRODUCTS = [
       { name: 'Negro', hex: '#1a1a1a', image: 'assets/products/campera-puffer-negra.jpeg' },
     ],
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    curve: [1, 2, 2, 2, 1],
     image: 'assets/products/campera-puffer-gris.jpeg',
   },
   {
@@ -31,6 +30,7 @@ const PRODUCTS = [
       { name: 'Negro Iridiscente', hex: '#1a1a1a', image: 'assets/products/campera-puffer-negra.jpeg' },
     ],
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    curve: [1, 2, 2, 2, 1],
     image: 'assets/products/campera-puffer-negra.jpeg',
   },
   {
@@ -42,12 +42,13 @@ const PRODUCTS = [
     gradientFrom: '#1a1a1a',
     gradientTo: '#2d2d2d',
     colors: [
-      { name: 'Negro',   hex: '#1a1a1a' },
-      { name: 'Gris',    hex: '#5a5a5a' },
-      { name: 'Bordó',   hex: '#800020' },
-      { name: 'Azul',    hex: '#1E90FF' },
+      { name: 'Negro',  hex: '#1a1a1a' },
+      { name: 'Gris',   hex: '#5a5a5a' },
+      { name: 'Bordó',  hex: '#800020' },
+      { name: 'Azul',   hex: '#1E90FF' },
     ],
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    curve: [1, 2, 2, 2, 1],
     image: null,
   },
 
@@ -61,12 +62,13 @@ const PRODUCTS = [
     gradientFrom: '#2d0a2e',
     gradientTo: '#1a0a2a',
     colors: [
-      { name: 'Rosa',     hex: '#ff69b4' },
-      { name: 'Blanco',   hex: '#f5f5f5' },
-      { name: 'Negro',    hex: '#1a1a1a' },
-      { name: 'Violeta',  hex: '#8B5CF6' },
+      { name: 'Rosa',    hex: '#ff69b4' },
+      { name: 'Blanco',  hex: '#f5f5f5' },
+      { name: 'Negro',   hex: '#1a1a1a' },
+      { name: 'Violeta', hex: '#8B5CF6' },
     ],
     sizes: ['XS', 'S', 'M', 'L', 'XL'],
+    curve: [1, 2, 2, 2, 1],
     image: null,
   },
   {
@@ -78,12 +80,13 @@ const PRODUCTS = [
     gradientFrom: '#1a0d1a',
     gradientTo: '#2a1a2a',
     colors: [
-      { name: 'Negro',    hex: '#1a1a1a' },
-      { name: 'Gris',     hex: '#7a7a7a' },
-      { name: 'Rosa',     hex: '#ff69b4' },
-      { name: 'Verde',    hex: '#39FF14' },
+      { name: 'Negro', hex: '#1a1a1a' },
+      { name: 'Gris',  hex: '#7a7a7a' },
+      { name: 'Rosa',  hex: '#ff69b4' },
+      { name: 'Verde', hex: '#39FF14' },
     ],
     sizes: ['XS', 'S', 'M', 'L', 'XL'],
+    curve: [1, 2, 2, 2, 1],
     image: null,
   },
   {
@@ -95,11 +98,12 @@ const PRODUCTS = [
     gradientFrom: '#0d1a0d',
     gradientTo: '#1a2e1a',
     colors: [
-      { name: 'Negro',    hex: '#1a1a1a' },
-      { name: 'Verde',    hex: '#2d5a27' },
-      { name: 'Beige',    hex: '#c8b89a' },
+      { name: 'Negro', hex: '#1a1a1a' },
+      { name: 'Verde', hex: '#2d5a27' },
+      { name: 'Beige', hex: '#c8b89a' },
     ],
     sizes: ['XS', 'S', 'M', 'L', 'XL'],
+    curve: [1, 2, 2, 2, 1],
     image: null,
   },
 
@@ -113,11 +117,12 @@ const PRODUCTS = [
     gradientFrom: '#0a1a2e',
     gradientTo: '#0d2744',
     colors: [
-      { name: 'Azul',    hex: '#1E90FF' },
-      { name: 'Negro',   hex: '#1a1a1a' },
-      { name: 'Rojo',    hex: '#cc2222' },
+      { name: 'Azul',  hex: '#1E90FF' },
+      { name: 'Negro', hex: '#1a1a1a' },
+      { name: 'Rojo',  hex: '#cc2222' },
     ],
     sizes: ['4', '6', '8', '10', '12', '14'],
+    curve: [1, 1, 2, 2, 1, 1],
     image: null,
   },
   {
@@ -135,6 +140,7 @@ const PRODUCTS = [
       { name: 'Amarillo', hex: '#FFD700' },
     ],
     sizes: ['4', '6', '8', '10', '12', '14'],
+    curve: [1, 1, 2, 2, 1, 1],
     image: null,
   },
 
@@ -151,6 +157,7 @@ const PRODUCTS = [
       { name: 'Blanco', hex: '#f5f5f5' },
     ],
     sizes: ['4', '6', '8', '10', '12', '14', '16'],
+    curve: [1, 1, 2, 2, 2, 1, 1],
     image: null,
   },
   {
@@ -167,6 +174,7 @@ const PRODUCTS = [
       { name: 'Azul',        hex: '#1a2a5e' },
     ],
     sizes: ['4', '6', '8', '10', '12', '14', '16'],
+    curve: [1, 1, 2, 2, 2, 1, 1],
     image: null,
   },
   {
@@ -183,6 +191,7 @@ const PRODUCTS = [
       { name: 'Gris',        hex: '#555555' },
     ],
     sizes: ['4', '6', '8', '10', '12', '14', '16'],
+    curve: [1, 1, 2, 2, 2, 1, 1],
     image: null,
   },
   {
@@ -199,6 +208,7 @@ const PRODUCTS = [
       { name: 'Bordo',       hex: '#800020' },
     ],
     sizes: ['4', '6', '8', '10', '12', '14', '16'],
+    curve: [1, 1, 2, 2, 2, 1, 1],
     image: null,
   },
 ];

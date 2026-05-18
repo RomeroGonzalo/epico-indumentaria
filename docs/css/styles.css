@@ -816,12 +816,13 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .cart-item-meta { font-size: .76rem; color: var(--muted); margin-top: 2px; }
 .cart-item-price { font-size: .9rem; font-weight: 700; color: var(--green); margin-top: 4px; }
 .cart-item-remove {
-  width: 24px; height: 24px;
+  width: 26px; height: 26px;
   border-radius: 6px;
   color: var(--muted);
   font-size: .8rem;
-  align-self: flex-start;
+  display: flex; align-items: center; justify-content: center;
   transition: background .2s, color .2s;
+  flex-shrink: 0;
 }
 .cart-item-remove:hover { background: rgba(255,50,50,.15); color: #ff5555; }
 
@@ -1032,6 +1033,154 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .wapp-float:hover {
   transform: scale(1.1);
   box-shadow: 0 6px 28px rgba(37,211,102,.55);
+}
+
+/* ============================================================
+   CURVA CERRADA — variantes en tarjeta de producto
+   ============================================================ */
+.variants-standard,
+.variants-curva {
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.curva-info-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.curva-label-text {
+  font-size: .72rem;
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+.curva-label-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.curva-color-chips { display: flex; gap: 5px; flex-wrap: wrap; }
+
+.curva-color-chip {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.curva-colors-names {
+  font-size: .75rem;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.curva-breakdown-row {
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-family: 'Courier New', monospace;
+  letter-spacing: .02em;
+}
+
+.curva-total-text { font-size: .72rem; color: var(--muted); }
+
+.curva-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(57,255,20,.06);
+  border: 1px solid rgba(57,255,20,.2);
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+.curva-price-label { font-size: .78rem; color: var(--muted); font-weight: 600; }
+.curva-price-value { font-size: 1rem; font-weight: 800; color: var(--green); }
+
+.curva-qty-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.curva-qty-unit {
+  font-size: .65rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.btn-add-curva {
+  flex: 1;
+  padding: 8px 12px;
+  background: var(--green);
+  color: #000;
+  font-weight: 700;
+  font-size: .83rem;
+  border-radius: 8px;
+  transition: opacity .2s, transform .15s;
+}
+.btn-add-curva:hover  { opacity: .88; transform: scale(1.01); }
+.btn-add-curva:active { transform: scale(.97); }
+
+/* ============================================================
+   CART — cantidad editable inline
+   ============================================================ */
+.cart-item { align-items: center; }
+
+.cart-item-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+  margin-left: auto;
+  padding-left: 8px;
+}
+
+.cart-qty-control {
+  display: flex;
+  align-items: center;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.cart-qty-btn {
+  width: 26px; height: 26px;
+  color: var(--text);
+  font-size: 1rem;
+  line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s;
+}
+.cart-qty-btn:hover { background: var(--border); }
+
+.cart-qty-val {
+  width: 28px;
+  text-align: center;
+  font-size: .85rem;
+  font-weight: 700;
+}
+
+.cart-qty-unit-label {
+  font-size: .62rem;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.2;
 }
 
 /* ============================================================
