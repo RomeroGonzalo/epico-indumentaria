@@ -219,7 +219,7 @@ const CLIENT_TYPES = {
     icon: '🛍️',
     discount: 0,
     bulkDiscount: 0.10,
-    bulkMinQty: 5,
+    bulkMinQty: 4,
     minimum: 0,
   },
   'curva-abierta': {
