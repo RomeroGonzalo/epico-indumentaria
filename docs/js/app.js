@@ -273,8 +273,8 @@ function addToCart(product, color, size, qty, unitPrice) {
   }
 
   renderCart();
-  openCart();
   bumpCartBadge();
+  showToast(`${product.emoji} <strong>${product.name}</strong> agregado al carrito`);
 }
 
 function removeFromCart(key) {
@@ -353,6 +353,21 @@ cartOverlay.addEventListener('click', closeCart);
 function bumpCartBadge() {
   cartCountEl.classList.add('bump');
   setTimeout(() => cartCountEl.classList.remove('bump'), 300);
+}
+
+// ---- Toast notification ----
+let toastTimer;
+function showToast(msg) {
+  let toast = document.getElementById('cartToast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'cartToast';
+    document.body.appendChild(toast);
+  }
+  toast.innerHTML = `<span class="toast-check">✓</span> ${msg}`;
+  toast.classList.add('visible');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('visible'), 2800);
 }
 
 // ---- Finalize ----
