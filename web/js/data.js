@@ -1,0 +1,228 @@
+// Catálogo de productos — Épico Indumentaria
+// Reemplazá el campo `image` con la ruta real cuando cargues las fotos.
+// El campo `emoji` se usa como placeholder visual hasta tener las imágenes.
+
+const PRODUCTS = [
+  // -------- HOMBRE --------
+  {
+    sku: 'EPH-001',
+    name: 'Campera Puffer con Capucha',
+    category: 'hombre',
+    price: 85000,
+    emoji: '🧥',
+    gradientFrom: '#1a1a1a',
+    gradientTo: '#2d2d2d',
+    colors: [
+      { name: 'Gris',  hex: '#b0b0b0', image: 'assets/products/campera-puffer-gris.jpeg' },
+      { name: 'Negro', hex: '#1a1a1a', image: 'assets/products/campera-puffer-negra.jpeg' },
+    ],
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    image: 'assets/products/campera-puffer-gris.jpeg',
+  },
+  {
+    sku: 'EPH-002',
+    name: 'Campera Puffer Premium Iridiscente',
+    category: 'hombre',
+    price: 110000,
+    emoji: '🧥',
+    gradientFrom: '#0d0d0d',
+    gradientTo: '#1a1a1a',
+    colors: [
+      { name: 'Negro Iridiscente', hex: '#1a1a1a', image: 'assets/products/campera-puffer-negra.jpeg' },
+    ],
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    image: 'assets/products/campera-puffer-negra.jpeg',
+  },
+  {
+    sku: 'EPH-003',
+    name: 'Buzo Canguro con Capucha',
+    category: 'hombre',
+    price: 22000,
+    emoji: '🧥',
+    gradientFrom: '#1a1a1a',
+    gradientTo: '#2d2d2d',
+    colors: [
+      { name: 'Negro',   hex: '#1a1a1a' },
+      { name: 'Gris',    hex: '#5a5a5a' },
+      { name: 'Bordó',   hex: '#800020' },
+      { name: 'Azul',    hex: '#1E90FF' },
+    ],
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    image: null,
+  },
+
+  // -------- MUJER --------
+  {
+    sku: 'EPM-001',
+    name: 'Vestido Casual Verano',
+    category: 'mujer',
+    price: 19500,
+    emoji: '👗',
+    gradientFrom: '#2d0a2e',
+    gradientTo: '#1a0a2a',
+    colors: [
+      { name: 'Rosa',     hex: '#ff69b4' },
+      { name: 'Blanco',   hex: '#f5f5f5' },
+      { name: 'Negro',    hex: '#1a1a1a' },
+      { name: 'Violeta',  hex: '#8B5CF6' },
+    ],
+    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+    image: null,
+  },
+  {
+    sku: 'EPM-002',
+    name: 'Pantalón Jogger Mujer',
+    category: 'mujer',
+    price: 17000,
+    emoji: '👖',
+    gradientFrom: '#1a0d1a',
+    gradientTo: '#2a1a2a',
+    colors: [
+      { name: 'Negro',    hex: '#1a1a1a' },
+      { name: 'Gris',     hex: '#7a7a7a' },
+      { name: 'Rosa',     hex: '#ff69b4' },
+      { name: 'Verde',    hex: '#39FF14' },
+    ],
+    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+    image: null,
+  },
+  {
+    sku: 'EPM-003',
+    name: 'Campera Bomber Mujer',
+    category: 'mujer',
+    price: 38000,
+    emoji: '🧥',
+    gradientFrom: '#0d1a0d',
+    gradientTo: '#1a2e1a',
+    colors: [
+      { name: 'Negro',    hex: '#1a1a1a' },
+      { name: 'Verde',    hex: '#2d5a27' },
+      { name: 'Beige',    hex: '#c8b89a' },
+    ],
+    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+    image: null,
+  },
+
+  // -------- NIÑOS --------
+  {
+    sku: 'EPN-001',
+    name: 'Conjunto Deportivo Nene',
+    category: 'ninos',
+    price: 21000,
+    emoji: '🏃',
+    gradientFrom: '#0a1a2e',
+    gradientTo: '#0d2744',
+    colors: [
+      { name: 'Azul',    hex: '#1E90FF' },
+      { name: 'Negro',   hex: '#1a1a1a' },
+      { name: 'Rojo',    hex: '#cc2222' },
+    ],
+    sizes: ['4', '6', '8', '10', '12', '14'],
+    image: null,
+  },
+  {
+    sku: 'EPN-002',
+    name: 'Remera Manga Larga Nena',
+    category: 'ninos',
+    price: 10500,
+    emoji: '👚',
+    gradientFrom: '#2d0a1a',
+    gradientTo: '#1a0a14',
+    colors: [
+      { name: 'Rosa',     hex: '#ff69b4' },
+      { name: 'Lila',     hex: '#c8a2c8' },
+      { name: 'Blanco',   hex: '#f5f5f5' },
+      { name: 'Amarillo', hex: '#FFD700' },
+    ],
+    sizes: ['4', '6', '8', '10', '12', '14'],
+    image: null,
+  },
+
+  // -------- COLEGIAL --------
+  {
+    sku: 'EPC-001',
+    name: 'Guardapolvo Escolar Blanco',
+    category: 'colegial',
+    price: 18000,
+    emoji: '🏫',
+    gradientFrom: '#1a1a2e',
+    gradientTo: '#2a2a40',
+    colors: [
+      { name: 'Blanco', hex: '#f5f5f5' },
+    ],
+    sizes: ['4', '6', '8', '10', '12', '14', '16'],
+    image: null,
+  },
+  {
+    sku: 'EPC-002',
+    name: 'Pantalón Colegial de Vestir',
+    category: 'colegial',
+    price: 16500,
+    emoji: '👔',
+    gradientFrom: '#0d1a2e',
+    gradientTo: '#1a2a3e',
+    colors: [
+      { name: 'Gris Oscuro', hex: '#3a3a3a' },
+      { name: 'Negro',       hex: '#1a1a1a' },
+      { name: 'Azul',        hex: '#1a2a5e' },
+    ],
+    sizes: ['4', '6', '8', '10', '12', '14', '16'],
+    image: null,
+  },
+  {
+    sku: 'EPC-003',
+    name: 'Campera Colegial Impermeable',
+    category: 'colegial',
+    price: 32000,
+    emoji: '🧥',
+    gradientFrom: '#0a0d1a',
+    gradientTo: '#1a1a2e',
+    colors: [
+      { name: 'Azul Marino', hex: '#001F5B' },
+      { name: 'Negro',       hex: '#1a1a1a' },
+      { name: 'Gris',        hex: '#555555' },
+    ],
+    sizes: ['4', '6', '8', '10', '12', '14', '16'],
+    image: null,
+  },
+  {
+    sku: 'EPC-004',
+    name: 'Buzo Colegial Escolar',
+    category: 'colegial',
+    price: 20000,
+    emoji: '🎒',
+    gradientFrom: '#0a1a0a',
+    gradientTo: '#1a2e1a',
+    colors: [
+      { name: 'Azul Marino', hex: '#001F5B' },
+      { name: 'Gris',        hex: '#555555' },
+      { name: 'Bordo',       hex: '#800020' },
+    ],
+    sizes: ['4', '6', '8', '10', '12', '14', '16'],
+    image: null,
+  },
+];
+
+const CLIENT_TYPES = {
+  minorista: {
+    label: 'Público General',
+    icon: '🛍️',
+    discount: 0,
+    minimum: 0,
+  },
+  'curva-abierta': {
+    label: 'Mayorista — Curva Abierta',
+    icon: '📦',
+    discount: 0.15,
+    minimum: 200000,
+  },
+  'curva-cerrada': {
+    label: 'Mayorista — Curva Cerrada',
+    icon: '🏭',
+    discount: 0.30,
+    minimum: 0,
+  },
+};
+
+const WHATSAPP_NUMBER = '5493412268086';
+const MINIMUM_MAYORISTA = 200000;
