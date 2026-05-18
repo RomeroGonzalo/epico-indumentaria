@@ -1,6 +1,6 @@
 /* ============================================================
-   Ã‰PICO INDUMENTARIA â€” styles.css
-   Paleta: verde lima #39FF14, azul elÃ©ctrico #1E90FF, negro #0a0a0a
+   EPICO INDUMENTARIA - styles.css
+   Paleta: verde lima #39FF14, azul electrico #1E90FF, negro #0a0a0a
    ============================================================ */
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -103,7 +103,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   gap: 24px;
 }
 .logo-wrap { flex-shrink: 0; }
-.logo-img  {
+.logo-img {
   height: 100px;
   width: auto;
   mix-blend-mode: screen;
@@ -175,17 +175,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
    ============================================================ */
 .client-selector-section {
   background: var(--surface);
-  padding: 48px 0;
+  padding: 64px 0;
   border-bottom: 1px solid var(--border);
-}
-.selector-eyebrow {
-  text-align: center;
-  font-size: .8rem;
-  font-weight: 700;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 24px;
 }
 .selector-title {
   font-family: 'Bebas Neue', sans-serif;
@@ -250,7 +241,6 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .selector-badge.discount-b {
   background: rgba(57,255,20,.25);
   color: var(--green);
-  font-size: .8rem;
 }
 
 /* ============================================================
@@ -592,7 +582,6 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .qty-control {
   display: flex;
   align-items: center;
-  gap: 0;
   background: var(--surface);
   border: 1.5px solid var(--border);
   border-radius: 8px;
@@ -993,13 +982,25 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 
 @media (max-width: 768px) {
-  .main-nav { display: none; position: absolute; top: var(--header-h); left: 0; right: 0; background: var(--surface); flex-direction: column; padding: 20px; gap: 16px; border-bottom: 1px solid var(--border); }
+  :root { --header-h: 80px; }
+  .logo-img { height: 68px; }
+  .site-header.scrolled .logo-img { height: 44px; }
+  .main-nav {
+    display: none;
+    position: absolute;
+    top: var(--header-h);
+    left: 0; right: 0;
+    background: var(--surface);
+    flex-direction: column;
+    padding: 20px;
+    gap: 16px;
+    border-bottom: 1px solid var(--border);
+  }
   .main-nav.open { display: flex; }
   .menu-toggle { display: flex; }
   .hero-section { height: 460px; }
   .slide-content h1 { font-size: 3rem; }
   .slide-deco { display: none; }
-  .about-grid { grid-template-columns: 1fr; }
   .locations-grid { grid-template-columns: 1fr; }
   .pillars-grid { grid-template-columns: 1fr 1fr; }
   .footer-grid { grid-template-columns: 1fr; }
@@ -1007,9 +1008,14 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 
 @media (max-width: 480px) {
-  .products-grid { grid-template-columns: 1fr; gap: 12px; }
+  :root { --header-h: 70px; }
+  .logo-img { height: 56px; }
+  .products-grid { grid-template-columns: 1fr; gap: 16px; }
   .catalog-header { flex-direction: column; align-items: flex-start; }
   .contact-ctas { flex-direction: column; }
   .btn-wapp-big, .btn-ig-big { width: 100%; justify-content: center; }
   .hero-section { height: 400px; }
+  .selector-cards { grid-template-columns: 1fr; }
+  .about-grid { grid-template-columns: 1fr; }
+  .pillars-grid { grid-template-columns: 1fr 1fr; }
 }
