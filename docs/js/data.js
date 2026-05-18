@@ -218,21 +218,23 @@ const CLIENT_TYPES = {
     label: 'Público General',
     icon: '🛍️',
     discount: 0,
+    bulkDiscount: 0.10,
+    bulkMinQty: 5,
     minimum: 0,
   },
   'curva-abierta': {
     label: 'Mayorista — Curva Abierta',
     icon: '📦',
-    discount: 0.15,
-    minimum: 200000,
+    discount: 0.20,
+    minimum: 300000,
   },
   'curva-cerrada': {
     label: 'Mayorista — Curva Cerrada',
     icon: '🏭',
-    discount: 0.30,
+    discount: 0.35,
     minimum: 0,
   },
 };
 
 const WHATSAPP_NUMBER = '5493412268086';
-const MINIMUM_MAYORISTA = 200000;
+const MINIMUM_MAYORISTA = 300000;

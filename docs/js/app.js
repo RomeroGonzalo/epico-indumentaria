@@ -405,10 +405,18 @@ function changeCartQty(key, delta) {
 }
 
 function getCartTotal() {
-  return cart.reduce((sum, item) => {
+  const subtotal = cart.reduce((sum, item) => {
     const mult = item.isCurva ? item.totalInCurve : 1;
     return sum + item.unitPrice * mult * item.qty;
   }, 0);
+  // Descuento volumen para minorista: 10% comprando 5+ prendas
+  if (currentClientType === 'minorista') {
+    const totalQty = cart.reduce((s, i) => s + i.qty, 0);
+    if (totalQty >= CLIENT_TYPES.minorista.bulkMinQty) {
+      return Math.round(subtotal * (1 - CLIENT_TYPES.minorista.bulkDiscount));
+    }
+  }
+  return subtotal;
 }
 
 function renderCart() {
@@ -485,6 +493,7 @@ function renderCart() {
   const saving = baseTotal - total;
   cartTotalEl.textContent = formatMoney(total);
 
+  // Saving row
   let savingRow = document.getElementById('cartSavingRow');
   if (saving > 0) {
     if (!savingRow) {
@@ -493,10 +502,28 @@ function renderCart() {
       savingRow.className = 'cart-saving-row';
       cartTotalEl.closest('.cart-total-row').insertAdjacentElement('afterend', savingRow);
     }
-    savingRow.innerHTML    = `<span>Tu ahorro</span><span class="cart-saving-amount">−${formatMoney(saving)}</span>`;
+    const savingLabel = (currentClientType === 'minorista') ? 'Descuento volumen (10%)' : 'Tu ahorro';
+    savingRow.innerHTML    = `<span>${savingLabel}</span><span class="cart-saving-amount">−${formatMoney(saving)}</span>`;
     savingRow.style.display = 'flex';
   } else if (savingRow) {
     savingRow.style.display = 'none';
+  }
+
+  // Banner promo minorista: mostrar cuando faltan prendas para el descuento
+  const totalQty = cart.reduce((s, i) => s + i.qty, 0);
+  let promoBanner = document.getElementById('cartPromoBanner');
+  if (currentClientType === 'minorista' && totalQty < CLIENT_TYPES.minorista.bulkMinQty) {
+    if (!promoBanner) {
+      promoBanner = document.createElement('div');
+      promoBanner.id        = 'cartPromoBanner';
+      promoBanner.className = 'cart-promo-banner';
+      cartTotalEl.closest('.cart-total-row').insertAdjacentElement('beforebegin', promoBanner);
+    }
+    const remaining = CLIENT_TYPES.minorista.bulkMinQty - totalQty;
+    promoBanner.innerHTML   = `🎁 Agregá <strong>${remaining} prenda${remaining > 1 ? 's' : ''} más</strong> y obtenés un <strong>10% de descuento</strong> en todo el pedido`;
+    promoBanner.style.display = 'block';
+  } else if (promoBanner) {
+    promoBanner.style.display = 'none';
   }
 
   // Mínimo para curva-abierta
@@ -635,14 +662,22 @@ function buildWhatsAppMessage(name, phone, city, delivery) {
 
   lines.push('───────────────────────');
 
+  const baseTotal = cart.reduce((s, i) => {
+    const mult = i.isCurva ? i.totalInCurve : 1;
+    return s + i.basePrice * mult * i.qty;
+  }, 0);
+
   if (ct.discount > 0) {
-    const baseTotal = cart.reduce((s, i) => {
-      const mult = i.isCurva ? i.totalInCurve : 1;
-      return s + i.basePrice * mult * i.qty;
-    }, 0);
     const saved = baseTotal - total;
     lines.push(`💰 Precio lista: ${formatMoney(baseTotal)}`);
     lines.push(`🎉 Descuento aplicado (${ct.discount * 100}%): −${formatMoney(saved)}`);
+  } else if (currentClientType === 'minorista') {
+    const totalQty = cart.reduce((s, i) => s + i.qty, 0);
+    if (totalQty >= CLIENT_TYPES.minorista.bulkMinQty) {
+      const saved = baseTotal - total;
+      lines.push(`💰 Precio lista: ${formatMoney(baseTotal)}`);
+      lines.push(`🎁 Descuento volumen (10% por 5+ prendas): −${formatMoney(saved)}`);
+    }
   }
 
   lines.push(`✅ *TOTAL FINAL: ${formatMoney(total)}*`);
