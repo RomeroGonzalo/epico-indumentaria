@@ -20,7 +20,7 @@ const PRODUCTS = [
   },
   {
     sku: 'MLJIPRO',
-    name: 'Remera Mario Bros',
+    name: 'Remera Mario Bross',
     category: 'ninos',
     price: 7000,
     emoji: '👕',
@@ -51,7 +51,7 @@ const PRODUCTS = [
   {
     sku: 'MLJIGAS',
     name: 'Buzo Maltinto 23',
-    category: 'ninos',
+    category: 'ninos|ninas',
     price: 17000,
     emoji: '🧥',
     gradientFrom: '#1a1a1a',

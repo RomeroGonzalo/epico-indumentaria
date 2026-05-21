@@ -327,7 +327,8 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
 
 function applyFilter(filter) {
   document.querySelectorAll('.product-card').forEach(card => {
-    if (filter === 'all' || card.dataset.category === filter) {
+    const cats = card.dataset.category.split('|');
+    if (filter === 'all' || cats.includes(filter)) {
       card.classList.remove('hidden');
     } else {
       card.classList.add('hidden');
