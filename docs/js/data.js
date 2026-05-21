@@ -6,7 +6,7 @@ const PRODUCTS = [
   {
     sku: 'CAMOSNE',
     name: 'Campera Nena Canelon',
-    category: 'ninos',
+    category: 'ninas',
     price: 35000,
     emoji: '🧥',
     gradientFrom: '#2d0a1a',
