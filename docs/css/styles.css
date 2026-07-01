@@ -516,9 +516,85 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   width: 100%; height: 100%;
   object-fit: contain;
   padding: 8px;
-  transition: transform .3s;
+  transition: transform .35s;
 }
-.product-card:hover .product-img { transform: scale(1.04); }
+.product-card:hover .product-img { transform: scale(1.06); }
+
+/* Overlay oscuro en hover */
+.product-img-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0);
+  transition: background .25s;
+  z-index: 1;
+  pointer-events: none;
+}
+.product-img-wrap:hover::before { background: rgba(0,0,0,.38); }
+
+/* Ícono lupa en hover */
+.product-img-wrap::after {
+  content: '🔍';
+  font-size: 2.4rem;
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(.6);
+  z-index: 2;
+  opacity: 0;
+  transition: opacity .25s, transform .25s;
+  pointer-events: none;
+}
+.product-img-wrap:hover::after {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+.product-img-wrap { cursor: zoom-in; }
+
+/* ---- LIGHTBOX ---- */
+.img-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(0,0,0,.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s;
+  cursor: zoom-out;
+}
+.img-lightbox.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.img-lightbox img {
+  max-width: 90vw;
+  max-height: 88vh;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 24px 80px rgba(0,0,0,.7);
+  transform: scale(.92);
+  transition: transform .28s cubic-bezier(.4,0,.2,1);
+  cursor: default;
+}
+.img-lightbox.visible img { transform: scale(1); }
+
+.lightbox-close {
+  position: absolute;
+  top: 20px; right: 20px;
+  width: 42px; height: 42px;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 50%;
+  color: #fff;
+  font-size: 1.1rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s;
+  cursor: pointer;
+}
+.lightbox-close:hover { background: rgba(255,255,255,.25); }
 
 .product-info { padding: 16px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
 

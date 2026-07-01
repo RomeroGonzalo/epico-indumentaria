@@ -704,6 +704,39 @@ function formatMoney(n) {
 })();
 
 // ============================================================
+// IMAGE LIGHTBOX
+// ============================================================
+(function initLightbox() {
+  const lb = document.createElement('div');
+  lb.className = 'img-lightbox';
+  lb.innerHTML = '<button class="lightbox-close" aria-label="Cerrar">✕</button><img alt="">';
+  document.body.appendChild(lb);
+
+  const lbImg = lb.querySelector('img');
+
+  function open(src) {
+    lbImg.src = src;
+    lb.classList.add('visible');
+    document.body.style.overflow = 'hidden';
+  }
+  function close() {
+    lb.classList.remove('visible');
+    document.body.style.overflow = '';
+  }
+
+  lb.querySelector('.lightbox-close').addEventListener('click', close);
+  lb.addEventListener('click', e => { if (e.target === lb) close(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+
+  document.addEventListener('click', e => {
+    const wrap = e.target.closest('.product-img-wrap');
+    if (!wrap) return;
+    const img = wrap.querySelector('.product-img');
+    if (img && img.src) open(img.src);
+  });
+})();
+
+// ============================================================
 // INIT
 // ============================================================
 renderCatalog();
