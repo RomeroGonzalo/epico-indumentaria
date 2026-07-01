@@ -3,51 +3,6 @@
 
 const PRODUCTS = [
   {
-    sku: 'CAMOSNE',
-    name: 'Campera Nena Canelon',
-    category: 'ninas',
-    price: 35000,
-    emoji: '🧥',
-    gradientFrom: '#2d0a1a',
-    gradientTo: '#1a0a14',
-    colors: [
-      { name: 'Rosa', hex: '#ff69b4', image: 'assets/products/CAMOSNE.jpeg' },
-    ],
-    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-    curve: [1, 1, 1, 1, 1],
-    image: 'assets/products/CAMOSNE.jpeg',
-  },
-  {
-    sku: 'BUMAYDAR',
-    name: 'Sweater',
-    category: 'ninos',
-    price: 15000,
-    emoji: '🧥',
-    gradientFrom: '#0a1a0a',
-    gradientTo: '#1a2e1a',
-    colors: [
-      { name: 'Verde', hex: '#39FF14', image: 'assets/products/BUMAYDAR.jpeg' },
-    ],
-    sizes: ['S', 'M', 'L', 'XL'],
-    curve: [1, 1, 1, 1],
-    image: 'assets/products/BUMAYDAR.jpeg',
-  },
-  {
-    sku: 'MLJIGAS',
-    name: 'Buzo Maltinto 23',
-    category: 'ninos|ninas',
-    price: 17000,
-    emoji: '🧥',
-    gradientFrom: '#1a1a1a',
-    gradientTo: '#2d2d2d',
-    colors: [
-      { name: 'Negro', hex: '#1a1a1a', image: 'assets/products/MLJIGAS.jpeg' },
-    ],
-    sizes: ['S', 'M', 'L', 'XL'],
-    curve: [1, 1, 1, 1],
-    image: 'assets/products/MLJIGAS.jpeg',
-  },
-  {
     sku: 'RESOTERAD',
     name: 'Camiseta térmica adulto',
     category: 'hombre|mujer',
