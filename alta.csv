@@ -1,0 +1,8 @@
+sku,nombre,precio,categoria,colores,talles
+# INSTRUCCIONES:
+# - categoria: ninos | ninas | ninos|ninas | mujer | hombre | hombre|mujer
+# - colores: separados por | (el primero es el principal)
+# - talles: separados por | (ej: 4|6|8|10|12|14|16 o 1|2|3|4|5 o 36|38|40|42|44|46)
+# - foto: guardar como SKU.jpeg (mayusculas) en docs/assets/products/
+# EJEMPLO:
+# REMEJENI,Remera ejemplo niño,8000,ninos,Negro|Azul|Gris,4|6|8|10|12|14|16
