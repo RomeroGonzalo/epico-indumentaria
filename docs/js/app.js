@@ -739,5 +739,9 @@ function formatMoney(n) {
 // ============================================================
 // INIT
 // ============================================================
-renderCatalog();
-updatePriceUI();
+// Se llama desde catalog-loader.js una vez que PRODUCTS está listo
+// (cargado desde Google Sheets o desde el catálogo de respaldo).
+function initApp() {
+  renderCatalog();
+  updatePriceUI();
+}

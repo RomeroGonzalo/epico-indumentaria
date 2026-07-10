@@ -1,7 +1,8 @@
 // Catálogo de productos — Épico Indumentaria
-// Actualizado automáticamente desde Google Drive + Google Sheets
+// Este array es solo un RESPALDO por si no se puede leer el Google Sheet
+// (ver js/catalog-loader.js). El catálogo real se carga desde el Sheet.
 
-const PRODUCTS = [
+const FALLBACK_PRODUCTS = [
   {
     sku: 'RESOTERAD',
     name: 'Camiseta térmica adulto',
