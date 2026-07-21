@@ -621,7 +621,7 @@ const CLIENT_TYPES = {
   'curva-abierta': {
     label: 'Mayorista — Curva Abierta',
     icon: '📦',
-    discount: 0.20,
+    discount: 0.25,
     minimum: 300000,
   },
   'curva-cerrada': {
