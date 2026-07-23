@@ -8,6 +8,7 @@ const FALLBACK_PRODUCTS = [
     name: 'Camiseta térmica adulto',
     category: 'hombre|mujer',
     price: 9000,
+    promoPrice: 6500,
     emoji: '👕',
     gradientFrom: '#1a1a1a',
     gradientTo: '#2d2d2d',

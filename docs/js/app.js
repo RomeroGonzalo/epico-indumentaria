@@ -96,29 +96,40 @@ function updatePriceUI() {
   cartClientPill.textContent = `${ct.icon} ${ct.label}`;
 }
 
-function calcPrice(basePrice) {
+// Un producto "oportunidad" trae precio promocional propio: ese precio ES
+// el final, sin importar el tipo de cliente — los descuentos no se acumulan.
+function hasPromo(promoPrice) {
+  return !!promoPrice && promoPrice > 0;
+}
+
+function calcPrice(basePrice, promoPrice) {
+  if (hasPromo(promoPrice)) return Math.round(promoPrice);
   return Math.round(basePrice * (1 - CLIENT_TYPES[currentClientType].discount));
 }
 
 function updateCardPrice(card, basePrice) {
-  const finalPrice   = calcPrice(basePrice);
-  const ct           = CLIENT_TYPES[currentClientType];
-  const isCurva      = currentClientType === 'curva-cerrada';
-  const totalInCurve = +card.dataset.curveTotal || 1;
-  const priceOrig    = card.querySelector('.price-original');
-  const priceCurrent = card.querySelector('.price-current');
-  const discTag      = card.querySelector('.discount-tag');
-  const savingTag    = card.querySelector('.saving-tag');
+  const promoPrice    = +card.dataset.promoPrice || 0;
+  const isPromo       = hasPromo(promoPrice);
+  const finalPrice    = calcPrice(basePrice, promoPrice);
+  const ct            = CLIENT_TYPES[currentClientType];
+  const isCurva       = currentClientType === 'curva-cerrada';
+  const totalInCurve  = +card.dataset.curveTotal || 1;
+  const priceOrig     = card.querySelector('.price-original');
+  const priceCurrent  = card.querySelector('.price-current');
+  const discTag       = card.querySelector('.discount-tag');
+  const savingTag     = card.querySelector('.saving-tag');
+  const showDiscount  = isPromo || ct.discount > 0;
+  const discountPct   = isPromo ? Math.round((1 - finalPrice / basePrice) * 100) : ct.discount * 100;
 
   priceCurrent.textContent = formatMoney(finalPrice);
 
-  if (ct.discount > 0) {
+  if (showDiscount) {
     const saving = isCurva
       ? (basePrice - finalPrice) * totalInCurve
       : basePrice - finalPrice;
     priceOrig.textContent   = formatMoney(basePrice);
     priceOrig.style.display = 'inline';
-    discTag.textContent     = `−${ct.discount * 100}%`;
+    discTag.textContent     = `−${discountPct}%`;
     discTag.style.display   = 'inline';
     savingTag.textContent   = isCurva
       ? `Ahorrás ${formatMoney(saving)} por curva`
@@ -147,19 +158,24 @@ function renderCatalog() {
 }
 
 function buildProductCard(p) {
+  const isPromo = hasPromo(p.promoPrice);
+
   const card = document.createElement('div');
   card.className        = 'product-card';
-  card.dataset.category = p.category;
-  card.dataset.sku      = p.sku;
+  card.dataset.category  = isPromo ? `${p.category}|oportunidades` : p.category;
+  card.dataset.sku       = p.sku;
   card.dataset.basePrice = p.price;
+  card.dataset.promoPrice = p.promoPrice || 0;
 
   const totalInCurve  = p.curve.reduce((a, b) => a + b, 0);
   card.dataset.curveTotal = totalInCurve;
 
-  const finalPrice    = calcPrice(p.price);
+  const finalPrice    = calcPrice(p.price, p.promoPrice);
   const pricePerCurva = finalPrice * totalInCurve;
   const ct            = CLIENT_TYPES[currentClientType];
-  const isCurva       = currentClientType === 'curva-cerrada';
+  const isCurva        = currentClientType === 'curva-cerrada';
+  const showDiscount   = isPromo || ct.discount > 0;
+  const discountPct    = isPromo ? Math.round((1 - finalPrice / p.price) * 100) : ct.discount * 100;
   const savingUnit    = p.price - finalPrice;
   const savingCurva   = savingUnit * totalInCurve;
 
@@ -194,16 +210,19 @@ function buildProductCard(p) {
        </div>`;
 
   card.innerHTML = `
-    <div class="product-img-wrap">${imgContent}</div>
+    <div class="product-img-wrap">
+      ${imgContent}
+      ${isPromo ? '<span class="promo-badge">🔥 Oferta</span>' : ''}
+    </div>
     <div class="product-info">
       <span class="product-sku">${p.sku}</span>
       <h3 class="product-name">${p.name}</h3>
       <div class="product-pricing">
-        <span class="price-original" style="display:${ct.discount > 0 ? 'inline' : 'none'}">${formatMoney(p.price)}</span>
+        <span class="price-original" style="display:${showDiscount ? 'inline' : 'none'}">${formatMoney(p.price)}</span>
         <span class="price-current">${formatMoney(finalPrice)}</span>
-        <span class="discount-tag" style="display:${ct.discount > 0 ? 'inline' : 'none'}">−${ct.discount * 100}%</span>
+        <span class="discount-tag" style="display:${showDiscount ? 'inline' : 'none'}">−${discountPct}%</span>
       </div>
-      <span class="saving-tag" style="display:${ct.discount > 0 ? 'inline' : 'none'}">
+      <span class="saving-tag" style="display:${showDiscount ? 'inline' : 'none'}">
         ${isCurva ? `Ahorrás ${formatMoney(savingCurva)} por curva` : `Ahorrás ${formatMoney(savingUnit)}`}
       </span>
 
@@ -293,7 +312,7 @@ function buildProductCard(p) {
     const color = card.querySelector('.color-swatch.active').dataset.color;
     const size  = card.querySelector('.size-btn.active').dataset.size;
     const qty   = +card.querySelector('.qty-val').textContent;
-    addToCart(p, color, size, qty, calcPrice(p.price));
+    addToCart(p, color, size, qty, calcPrice(p.price, p.promoPrice));
   });
 
   // ---- Curva: qty control ----
@@ -349,7 +368,7 @@ function addToCart(product, color, size, qty, unitPrice) {
   } else {
     cart.push({
       key, sku: product.sku, name: product.name, emoji: product.emoji,
-      color, size, qty, unitPrice, basePrice: product.price,
+      color, size, qty, unitPrice, basePrice: product.price, promoPrice: product.promoPrice || 0,
     });
   }
 
@@ -361,7 +380,7 @@ function addToCart(product, color, size, qty, unitPrice) {
 function addCurvaToCart(product, qtyCurvas) {
   const totalInCurve = product.curve.reduce((a, b) => a + b, 0);
   const key          = `${product.sku}-curva`;
-  const unitPrice    = calcPrice(product.price);
+  const unitPrice    = calcPrice(product.price, product.promoPrice);
   const existing     = cart.find(i => i.key === key);
 
   if (existing) {
@@ -379,6 +398,7 @@ function addCurvaToCart(product, qtyCurvas) {
       qty:         qtyCurvas,
       unitPrice,
       basePrice:   product.price,
+      promoPrice:  product.promoPrice || 0,
       colors:      product.colors.map(c => c.name),
     });
   }
@@ -406,23 +426,28 @@ function changeCartQty(key, delta) {
 }
 
 function getCartTotal() {
-  const subtotal = cart.reduce((sum, item) => {
+  const lineTotal = item => {
     const mult = item.isCurva ? item.totalInCurve : 1;
-    return sum + item.unitPrice * mult * item.qty;
-  }, 0);
-  // Descuento volumen para minorista: 10% comprando 4+ prendas
+    return item.unitPrice * mult * item.qty;
+  };
+  // Los productos con precio promocional ya tienen su precio final: no
+  // acumulan el descuento por volumen (10% minorista con 4+ prendas).
+  const promoSubtotal = cart.filter(i => hasPromo(i.promoPrice)).reduce((s, i) => s + lineTotal(i), 0);
+  const regularSubtotal = cart.filter(i => !hasPromo(i.promoPrice)).reduce((s, i) => s + lineTotal(i), 0);
+
+  let regularTotal = regularSubtotal;
   if (currentClientType === 'minorista') {
     const totalQty = cart.reduce((s, i) => s + i.qty, 0);
     if (totalQty >= CLIENT_TYPES.minorista.bulkMinQty) {
-      return Math.round(subtotal * (1 - CLIENT_TYPES.minorista.bulkDiscount));
+      regularTotal = Math.round(regularSubtotal * (1 - CLIENT_TYPES.minorista.bulkDiscount));
     }
   }
-  return subtotal;
+  return regularTotal + promoSubtotal;
 }
 
 function renderCart() {
   // Recalc unit prices on client type change
-  cart.forEach(item => { item.unitPrice = calcPrice(item.basePrice); });
+  cart.forEach(item => { item.unitPrice = calcPrice(item.basePrice, item.promoPrice); });
 
   cartCountEl.textContent = cart.reduce((s, i) => s + i.qty, 0);
 
@@ -664,17 +689,10 @@ function buildWhatsAppMessage(name, phone, city, delivery) {
     return s + i.basePrice * mult * i.qty;
   }, 0);
 
-  if (ct.discount > 0) {
-    const saved = baseTotal - total;
+  const saved = baseTotal - total;
+  if (saved > 0) {
     lines.push(`💰 Precio lista: ${formatMoney(baseTotal)}`);
-    lines.push(`🎉 Descuento aplicado (${ct.discount * 100}%): −${formatMoney(saved)}`);
-  } else if (currentClientType === 'minorista') {
-    const totalQty = cart.reduce((s, i) => s + i.qty, 0);
-    if (totalQty >= CLIENT_TYPES.minorista.bulkMinQty) {
-      const saved = baseTotal - total;
-      lines.push(`💰 Precio lista: ${formatMoney(baseTotal)}`);
-      lines.push(`🎁 Descuento volumen (10% por 4+ prendas): −${formatMoney(saved)}`);
-    }
+    lines.push(`🎉 Descuento aplicado: −${formatMoney(saved)}`);
   }
 
   lines.push(`✅ *TOTAL FINAL: ${formatMoney(total)}*`);

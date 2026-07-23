@@ -127,6 +127,11 @@ function rowToProduct(headers, cells, index) {
   const price = parseFloat(get('precio').replace(/[^\d.,]/g, '').replace(',', '.'));
   if (!name || !price) return null; // fila vacía o incompleta: se ignora
 
+  // Columna "Precio promocional": si viene cargada y es menor al precio de
+  // lista, el producto pasa a ser una "oportunidad" (ver rules en app.js).
+  const promoRaw   = get('promocion').replace(/[^\d.,]/g, '').replace(',', '.');
+  const promoPrice = promoRaw ? parseFloat(promoRaw) : 0;
+
   const sku = get('sku', 'codigo') || `PROD${index}`;
 
   const categories = get('categoria')
@@ -152,7 +157,10 @@ function rowToProduct(headers, cells, index) {
 
   const [gradientFrom, gradientTo] = FALLBACK_GRADIENTS[index % FALLBACK_GRADIENTS.length];
 
-  return { sku, name, category, price, emoji: pickEmoji(name), gradientFrom, gradientTo, colors, sizes, curve, image };
+  // Precio promocional inválido (vacío, 0 o mayor/igual al de lista) se ignora.
+  const validPromoPrice = (promoPrice > 0 && promoPrice < price) ? promoPrice : 0;
+
+  return { sku, name, category, price, promoPrice: validPromoPrice, emoji: pickEmoji(name), gradientFrom, gradientTo, colors, sizes, curve, image };
 }
 
 function parseSheetToProducts(csvText) {
