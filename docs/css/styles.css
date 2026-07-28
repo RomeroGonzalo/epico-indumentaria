@@ -197,8 +197,6 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
-  max-width: 720px;
-  margin: 0 auto;
 }
 .selector-card { cursor: pointer; }
 .selector-card input[type="radio"] { display: none; }
@@ -249,8 +247,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   display: flex;
   gap: 10px;
   align-items: flex-start;
-  max-width: 720px;
-  margin: 20px auto 0;
+  margin: 20px 0 0;
   padding: 12px 16px;
   background: rgba(30,144,255,.08);
   border: 1px solid rgba(30,144,255,.25);
