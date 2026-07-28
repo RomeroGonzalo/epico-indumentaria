@@ -148,21 +148,11 @@
     <div class="container">
       <span class="section-tag">Precios personalizados</span>
       <h2 class="selector-title">¿Quién sos? Elegí tu perfil<br>y <span class="hl-green">los precios se adaptan solos</span></h2>
-      <p class="selector-subtitle">Seleccioná tu tipo de compra antes de ver el catálogo. Los precios cambian automáticamente según tu categoría.</p>
+      <p class="selector-subtitle">Este catálogo es exclusivo para pedidos mayoristas. Elegí tu modalidad antes de ver el catálogo y los precios se ajustan solos.</p>
       <div class="selector-cards">
 
-        <label class="selector-card" for="tipo-minorista">
-          <input type="radio" name="clientType" id="tipo-minorista" value="minorista" checked>
-          <div class="selector-card-inner">
-            <span class="selector-icon">🛍️</span>
-            <h3>Público General</h3>
-            <p>Comprás por unidad para vos o tu familia. Comprando 4 o más prendas obtenés un 10% de descuento en el checkout.</p>
-            <span class="selector-badge discount-a">10% de descuento desde 4 prendas</span>
-          </div>
-        </label>
-
         <label class="selector-card" for="tipo-curva-abierta">
-          <input type="radio" name="clientType" id="tipo-curva-abierta" value="curva-abierta">
+          <input type="radio" name="clientType" id="tipo-curva-abierta" value="curva-abierta" checked>
           <div class="selector-card-inner">
             <span class="selector-icon">📦</span>
             <h3>Mayorista — Curva Abierta</h3>
@@ -182,6 +172,10 @@
         </label>
 
       </div>
+      <div class="retail-notice">
+        <span>🏪</span>
+        <p>¿Buscás comprar una sola prenda para vos o tu familia? Esa modalidad es solo en nuestros locales: <strong>San Luis 1598</strong> y <strong>San Luis 1312</strong>, Rosario. ¡Te esperamos!</p>
+      </div>
     </div>
   </section>
 
@@ -194,8 +188,8 @@
           <h2>Nuestros productos</h2>
         </div>
         <div class="price-mode-pill" id="priceModePill">
-          <span class="pill-icon">🛍️</span>
-          <span id="pillText">Precios: <strong>Lista</strong></span>
+          <span class="pill-icon">📦</span>
+          <span id="pillText">Precios: <strong>Mayorista — Curva Abierta (−25%)</strong></span>
         </div>
       </div>
       <div class="catalog-filters" id="catalogFilters">
@@ -284,7 +278,7 @@
       <h3>Tu pedido</h3>
       <button class="cart-close-btn" id="cartClose">✕</button>
     </div>
-    <div class="cart-client-pill" id="cartClientPill">🛍️ Público General</div>
+    <div class="cart-client-pill" id="cartClientPill">📦 Mayorista — Curva Abierta</div>
     <div class="cart-body" id="cartBody">
       <div class="cart-empty-state">
         <span>🛒</span>

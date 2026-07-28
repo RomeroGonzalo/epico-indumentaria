@@ -3,7 +3,7 @@
 // ============================================================
 
 // ---- STATE ----
-let currentClientType = 'minorista';
+let currentClientType = 'curva-abierta';
 let currentFilter     = 'all';
 let cart              = [];
 
@@ -73,13 +73,8 @@ function updatePriceUI() {
   const isCurva = currentClientType === 'curva-cerrada';
 
   // Pill en el catálogo
-  if (ct.discount === 0) {
-    pillText.innerHTML = 'Precios: <strong>Lista</strong>';
-    priceModePill.querySelector('.pill-icon').textContent = '🛍️';
-  } else {
-    pillText.innerHTML = `Precios: <strong>${ct.label} (−${ct.discount * 100}%)</strong>`;
-    priceModePill.querySelector('.pill-icon').textContent = ct.icon;
-  }
+  pillText.innerHTML = `Precios: <strong>${ct.label} (−${ct.discount * 100}%)</strong>`;
+  priceModePill.querySelector('.pill-icon').textContent = ct.icon;
 
   // Actualizar precios y modo en todas las tarjetas
   document.querySelectorAll('.product-card').forEach(card => {
@@ -431,18 +426,11 @@ function getCartTotal() {
     return item.unitPrice * mult * item.qty;
   };
   // Los productos con precio promocional ya tienen su precio final: no
-  // acumulan el descuento por volumen (10% minorista con 4+ prendas).
+  // acumulan el descuento del tipo de cliente.
   const promoSubtotal = cart.filter(i => hasPromo(i.promoPrice)).reduce((s, i) => s + lineTotal(i), 0);
   const regularSubtotal = cart.filter(i => !hasPromo(i.promoPrice)).reduce((s, i) => s + lineTotal(i), 0);
 
-  let regularTotal = regularSubtotal;
-  if (currentClientType === 'minorista') {
-    const totalQty = cart.reduce((s, i) => s + i.qty, 0);
-    if (totalQty >= CLIENT_TYPES.minorista.bulkMinQty) {
-      regularTotal = Math.round(regularSubtotal * (1 - CLIENT_TYPES.minorista.bulkDiscount));
-    }
-  }
-  return regularTotal + promoSubtotal;
+  return regularSubtotal + promoSubtotal;
 }
 
 function renderCart() {
@@ -528,28 +516,10 @@ function renderCart() {
       savingRow.className = 'cart-saving-row';
       cartTotalEl.closest('.cart-total-row').insertAdjacentElement('afterend', savingRow);
     }
-    const savingLabel = (currentClientType === 'minorista') ? 'Descuento volumen (10%)' : 'Tu ahorro';
-    savingRow.innerHTML    = `<span>${savingLabel}</span><span class="cart-saving-amount">−${formatMoney(saving)}</span>`;
+    savingRow.innerHTML    = `<span>Tu ahorro</span><span class="cart-saving-amount">−${formatMoney(saving)}</span>`;
     savingRow.style.display = 'flex';
   } else if (savingRow) {
     savingRow.style.display = 'none';
-  }
-
-  // Banner promo minorista: mostrar cuando faltan prendas para el descuento
-  const totalQty = cart.reduce((s, i) => s + i.qty, 0);
-  let promoBanner = document.getElementById('cartPromoBanner');
-  if (currentClientType === 'minorista' && totalQty < CLIENT_TYPES.minorista.bulkMinQty) {
-    if (!promoBanner) {
-      promoBanner = document.createElement('div');
-      promoBanner.id        = 'cartPromoBanner';
-      promoBanner.className = 'cart-promo-banner';
-      cartTotalEl.closest('.cart-total-row').insertAdjacentElement('beforebegin', promoBanner);
-    }
-    const remaining = CLIENT_TYPES.minorista.bulkMinQty - totalQty;
-    promoBanner.innerHTML   = `🎁 Agregá <strong>${remaining} prenda${remaining > 1 ? 's' : ''} más</strong> y obtenés un <strong>10% de descuento</strong> en todo el pedido`;
-    promoBanner.style.display = 'block';
-  } else if (promoBanner) {
-    promoBanner.style.display = 'none';
   }
 
   // Mínimo para curva-abierta

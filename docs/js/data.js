@@ -611,14 +611,6 @@ const FALLBACK_PRODUCTS = [
 ];
 
 const CLIENT_TYPES = {
-  minorista: {
-    label: 'Público General',
-    icon: '🛍️',
-    discount: 0,
-    bulkDiscount: 0.10,
-    bulkMinQty: 4,
-    minimum: 0,
-  },
   'curva-abierta': {
     label: 'Mayorista — Curva Abierta',
     icon: '📦',
