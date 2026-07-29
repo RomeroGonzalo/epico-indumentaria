@@ -253,7 +253,7 @@ function buildProductCard(p) {
   const curvaBreakdown = p.sizes.map((s, i) => `${s}×${p.curve[i]}`).join(' | ');
 
   const imgContent = p.image
-    ? `<img class="product-img" src="${p.image}" alt="${p.name}">`
+    ? `<img class="product-img" src="${p.image}" alt="${p.name}" loading="lazy" decoding="async">`
     : `<div class="product-placeholder" style="background:linear-gradient(135deg,${p.gradientFrom},${p.gradientTo})">
          <span>${p.emoji}</span>
          <span class="label">${p.category}</span>
@@ -334,7 +334,7 @@ function buildProductCard(p) {
       card.querySelector('.selected-color-name').textContent = sw.dataset.color;
       if (sw.dataset.image) {
         card.querySelector('.product-img-wrap').innerHTML =
-          `<img class="product-img" src="${sw.dataset.image}" alt="${sw.dataset.color}">`;
+          `<img class="product-img" src="${sw.dataset.image}" alt="${sw.dataset.color}" decoding="async">`;
       }
     });
   });
