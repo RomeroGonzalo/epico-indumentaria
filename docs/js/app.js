@@ -29,6 +29,12 @@ const stepsTracker   = document.getElementById('stepsTracker');
 // ============================================================
 const stepsDone = new Set();
 
+// En mobile arranca contraído para no tapar la pantalla; en desktop, desplegado.
+if (window.matchMedia('(max-width: 768px)').matches) {
+  stepsTracker.classList.remove('open');
+  document.getElementById('stepsToggle').setAttribute('aria-expanded', 'false');
+}
+
 function markStepDone(n) {
   if (stepsDone.has(n)) return;
   stepsDone.add(n);
