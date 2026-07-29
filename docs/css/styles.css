@@ -1304,6 +1304,89 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 
 /* ============================================================
+   STEPS TRACKER — guía de pedido flotante
+   ============================================================ */
+.steps-tracker {
+  position: fixed;
+  bottom: 24px; left: 24px;
+  z-index: 150;
+  width: 280px;
+  max-width: calc(100vw - 32px);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 28px rgba(0,0,0,.45);
+  overflow: hidden;
+  transition: opacity .2s, transform .2s;
+}
+.steps-tracker.tracker-hidden { opacity: 0; transform: translateY(12px); pointer-events: none; }
+
+.steps-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  text-align: left;
+}
+.steps-toggle-icon { font-size: 1.1rem; }
+.steps-toggle-text { flex: 1; font-size: .85rem; font-weight: 700; color: var(--text); }
+.steps-progress {
+  font-size: .72rem;
+  font-weight: 800;
+  color: var(--black);
+  background: var(--green);
+  border-radius: 50px;
+  padding: 2px 9px;
+}
+.steps-chevron { color: var(--muted); font-size: .8rem; transition: transform .2s; }
+.steps-tracker.open .steps-chevron { transform: rotate(180deg); }
+
+.steps-list {
+  list-style: none;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .25s ease;
+}
+.steps-tracker.open .steps-list { max-height: 320px; }
+
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--border);
+  transition: background .2s;
+}
+.step-circle {
+  flex-shrink: 0;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  color: var(--muted);
+  font-size: .75rem;
+  font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s, border-color .2s, color .2s;
+}
+.step-info strong { display: block; font-size: .82rem; color: var(--text); }
+.step-info p { font-size: .72rem; color: var(--muted); margin-top: 1px; }
+
+.step-item.current { background: rgba(30,144,255,.08); }
+.step-item.current .step-circle {
+  border-color: var(--blue);
+  color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(30,144,255,.18);
+}
+.step-item.done { background: rgba(57,255,20,.05); }
+.step-item.done .step-circle {
+  background: var(--green);
+  border-color: var(--green);
+  color: #000;
+}
+.step-item.done .step-info strong { color: var(--green); }
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 900px) {

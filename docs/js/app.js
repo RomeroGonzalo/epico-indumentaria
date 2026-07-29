@@ -22,6 +22,45 @@ const priceModePill  = document.getElementById('priceModePill');
 const pillText       = document.getElementById('pillText');
 const modalOverlay   = document.getElementById('modalOverlay');
 const btnFinalize    = document.getElementById('btnFinalize');
+const stepsTracker   = document.getElementById('stepsTracker');
+
+// ============================================================
+// STEPS TRACKER — guía de pedido ("Cómo hacer tu pedido")
+// ============================================================
+const stepsDone = new Set();
+
+function markStepDone(n) {
+  if (stepsDone.has(n)) return;
+  stepsDone.add(n);
+  const item = stepsTracker.querySelector(`.step-item[data-step="${n}"]`);
+  if (item) {
+    item.classList.add('done');
+    item.classList.remove('current');
+    item.querySelector('.step-circle').textContent = '✓';
+  }
+  updateStepsUI();
+}
+
+function updateStepsUI() {
+  document.getElementById('stepsProgress').textContent = `${stepsDone.size}/4`;
+  stepsTracker.querySelectorAll('.step-item').forEach(item => {
+    const n = +item.dataset.step;
+    if (stepsDone.has(n)) return;
+    item.classList.toggle('current', n === 1 || stepsDone.has(n - 1));
+  });
+  const allDone = stepsDone.size === 4;
+  stepsTracker.classList.toggle('all-done', allDone);
+  if (allDone) {
+    stepsTracker.querySelector('.steps-toggle-icon').textContent = '🎉';
+    stepsTracker.querySelector('.steps-toggle-text').textContent = '¡Pedido enviado!';
+  }
+}
+
+document.getElementById('stepsToggle').addEventListener('click', () => {
+  stepsTracker.classList.toggle('open');
+});
+
+updateStepsUI();
 
 // ============================================================
 // HERO CAROUSEL
@@ -69,6 +108,7 @@ document.querySelectorAll('input[name="clientType"]').forEach(radio => {
 });
 
 function updatePriceUI() {
+  markStepDone(1);
   const ct      = CLIENT_TYPES[currentClientType];
   const isCurva = currentClientType === 'curva-cerrada';
 
@@ -354,6 +394,7 @@ function applyFilter(filter) {
 // CART
 // ============================================================
 function addToCart(product, color, size, qty, unitPrice) {
+  markStepDone(2);
   const key      = `${product.sku}-${color}-${size}`;
   const existing = cart.find(i => i.key === key);
 
@@ -373,6 +414,7 @@ function addToCart(product, color, size, qty, unitPrice) {
 }
 
 function addCurvaToCart(product, qtyCurvas) {
+  markStepDone(2);
   const totalInCurve = product.curve.reduce((a, b) => a + b, 0);
   const key          = `${product.sku}-curva`;
   const unitPrice    = calcPrice(product.price, product.promoPrice);
@@ -539,13 +581,16 @@ function renderCart() {
 
 // ---- Cart open/close ----
 function openCart() {
+  if (cart.length > 0) markStepDone(3);
   cartSidebar.classList.add('open');
   cartOverlay.classList.add('visible');
+  stepsTracker.classList.add('tracker-hidden');
   document.body.style.overflow = 'hidden';
 }
 function closeCart() {
   cartSidebar.classList.remove('open');
   cartOverlay.classList.remove('visible');
+  stepsTracker.classList.remove('tracker-hidden');
   document.body.style.overflow = '';
 }
 
@@ -580,10 +625,12 @@ btnFinalize.addEventListener('click', openOrderModal);
 // ============================================================
 function openOrderModal() {
   modalOverlay.classList.add('visible');
+  stepsTracker.classList.add('tracker-hidden');
   document.body.style.overflow = 'hidden';
 }
 function closeOrderModal() {
   modalOverlay.classList.remove('visible');
+  if (!cartSidebar.classList.contains('open')) stepsTracker.classList.remove('tracker-hidden');
   document.body.style.overflow = '';
 }
 
@@ -592,6 +639,22 @@ modalOverlay.addEventListener('click', function (e) {
   if (e.target === this) closeOrderModal();
 });
 
+// ---- Dirección de envío: solo se pide y valida si eligen envío a domicilio ----
+const fieldAddress = document.getElementById('fieldAddress');
+const fAddress     = document.getElementById('fAddress');
+
+function updateAddressField() {
+  const delivery = document.querySelector('input[name="delivery"]:checked').value;
+  const isEnvio  = delivery === 'envio';
+  fieldAddress.style.display = isEnvio ? 'block' : 'none';
+  if (!isEnvio) fAddress.classList.remove('error');
+}
+
+document.querySelectorAll('input[name="delivery"]').forEach(radio => {
+  radio.addEventListener('change', updateAddressField);
+});
+updateAddressField();
+
 document.getElementById('orderForm').addEventListener('submit', function (e) {
   e.preventDefault();
 
@@ -599,18 +662,21 @@ document.getElementById('orderForm').addEventListener('submit', function (e) {
   const phone    = document.getElementById('fPhone').value.trim();
   const city     = document.getElementById('fCity').value.trim();
   const delivery = document.querySelector('input[name="delivery"]:checked').value;
+  const address  = delivery === 'envio' ? fAddress.value.trim() : '';
 
   let valid = true;
-  ['fName', 'fPhone', 'fCity'].forEach(id => {
+  const requiredFields = delivery === 'envio' ? ['fName', 'fPhone', 'fCity', 'fAddress'] : ['fName', 'fPhone', 'fCity'];
+  requiredFields.forEach(id => {
     const el = document.getElementById(id);
     if (!el.value.trim()) { el.classList.add('error'); valid = false; }
     else el.classList.remove('error');
   });
   if (!valid) return;
 
-  const message = buildWhatsAppMessage(name, phone, city, delivery);
+  const message = buildWhatsAppMessage(name, phone, city, delivery, address);
   const url     = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
   window.open(url, '_blank');
+  markStepDone(4);
 
   closeOrderModal();
   closeCart();
@@ -619,7 +685,7 @@ document.getElementById('orderForm').addEventListener('submit', function (e) {
 // ============================================================
 // WHATSAPP MESSAGE BUILDER
 // ============================================================
-function buildWhatsAppMessage(name, phone, city, delivery) {
+function buildWhatsAppMessage(name, phone, city, delivery, address) {
   const ct            = CLIENT_TYPES[currentClientType];
   const total         = getCartTotal();
   const deliveryLabel = delivery === 'envio' ? 'Envío a domicilio' : 'Retiro en sucursal';
@@ -632,6 +698,7 @@ function buildWhatsAppMessage(name, phone, city, delivery) {
     `👤 *Cliente:* ${name}`,
     `📱 *Teléfono:* ${phone}`,
     `📍 *Localidad:* ${city}`,
+    ...(delivery === 'envio' ? [`🏠 *Dirección de envío:* ${address}`] : []),
     `🏷️ *Tipo de cliente:* ${ct.label}`,
     `🚚 *Entrega:* ${deliveryLabel}`,
     '',
