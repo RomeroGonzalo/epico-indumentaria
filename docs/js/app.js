@@ -56,9 +56,18 @@ function updateStepsUI() {
   }
 }
 
+let stepsAutoCollapse = true;
 document.getElementById('stepsToggle').addEventListener('click', () => {
   stepsTracker.classList.toggle('open');
+  stepsAutoCollapse = false;
 });
+
+// Desplegado por defecto; se contrae solo al scrollear para no tapar la página
+// (deja de auto-gestionarse en cuanto el usuario lo toca a mano).
+window.addEventListener('scroll', () => {
+  if (!stepsAutoCollapse) return;
+  stepsTracker.classList.toggle('open', window.scrollY < 150);
+}, { passive: true });
 
 updateStepsUI();
 
