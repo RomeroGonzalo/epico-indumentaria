@@ -615,7 +615,7 @@ const CLIENT_TYPES = {
     label: 'Mayorista — Curva Abierta',
     icon: '📦',
     discount: 0.25,
-    minimum: 300000,
+    minimum: 200000,
   },
   'curva-cerrada': {
     label: 'Mayorista — Curva Cerrada',
@@ -626,4 +626,4 @@ const CLIENT_TYPES = {
 };
 
 const WHATSAPP_NUMBER = '5493412268086';
-const MINIMUM_MAYORISTA = 300000;
+const MINIMUM_MAYORISTA = 200000;
