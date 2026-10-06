@@ -69,7 +69,7 @@ Para todas las respuestas y contenidos que generes, basate estrictamente en el s
 ## NOTAS TÉCNICAS DE LA WEB
 
 - Al modificar `docs/css/styles.css` o `docs/js/*.js`, actualizar el `?v=` en los `<link>`/`<script>` de `docs/index.html` (el hosting cachea 10 min y el navegador puede mezclar HTML nuevo con CSS viejo).
-- Banners del hero: imágenes 2880×1040 en `docs/assets/banners/` (WebP).
+- Banners del hero: en `docs/assets/banners/` (WebP). Desktop 2880×1040 y versión mobile `*-mobile.webp` 1080×1350 (se usa en pantallas ≤600px vía `<picture>`).
 
 ---
 
