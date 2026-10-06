@@ -101,6 +101,17 @@ updateStepsUI();
   document.getElementById('slidePrev').addEventListener('click', () => { goTo(current - 1); resetAuto(); });
   dots.forEach(dot => dot.addEventListener('click', () => { goTo(+dot.dataset.index); resetAuto(); }));
 
+  // Swipe en mobile
+  const hero = document.querySelector('.hero-section');
+  let touchX = null;
+  hero.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
+  hero.addEventListener('touchend', e => {
+    if (touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    touchX = null;
+    if (Math.abs(dx) > 40) { goTo(current + (dx < 0 ? 1 : -1)); resetAuto(); }
+  });
+
   startAuto();
 })();
 
