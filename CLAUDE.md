@@ -70,6 +70,29 @@ Para todas las respuestas y contenidos que generes, basate estrictamente en el s
 
 - Al modificar `docs/css/styles.css` o `docs/js/*.js`, actualizar el `?v=` en los `<link>`/`<script>` de `docs/index.html` (el hosting cachea 10 min y el navegador puede mezclar HTML nuevo con CSS viejo).
 - Banners del hero: en `docs/assets/banners/` (WebP). Desktop 2880×1040 y versión mobile `*-mobile.webp` 1080×1350 (se usa en pantallas ≤600px vía `<picture>`).
+- Repo: github.com/RomeroGonzalo/epico-indumentaria. Se publica la carpeta `docs/` (dominio `epicoindumentaria.com` en `docs/CNAME`). Commit + push automático después de cada cambio.
+
+---
+
+## SINCRONIZAR EL CATÁLOGO (fotos en Drive + Google Sheet)
+
+Cuando el usuario diga "sincronizá el catálogo":
+
+- Carpeta raíz "Épico Indumentaria — Fotos Productos": `1s5-G8gjKDVTMztS_HEbUZ0IfaxAsnKIY`
+  - **Activas** (en catálogo): `1ZvvLj682NrOw5zavy_XrUIn_FT-hr3Qm`
+  - **Alta** (nuevos a dar de alta): `1FvStDWBI1S3KkaM-UI_UK7JddZuA9cLm`
+  - **Baja** (a sacar del catálogo): `1ogVqTLU-Z9cu20r7R_njThGSOggIkRhN`
+- Google Sheet "Catálogo Épico Indumentaria": `11ZzSccPXGBmEDAtmOeT8IKeuwmNO04fpDqiQSriHQTc`
+  - Columnas: `sku | nombre | precio | linea | color | talles | curva`
+  - `color`: pares `Nombre:#HEX` separados por `|` (ej. `Gris:#b0b0b0|Negro:#1a1a1a`)
+  - `talles` y `curva`: separados por `|` (ej. `S|M|L|XL` y `1|2|2|1`); `linea` puede ser multi-categoría (`Niños | Niñas`)
+- Nombres de fotos: `{SKU}.jpeg` (un color) o `{SKU}-{color}.jpeg` (minúsculas, guiones, sin espacios ni tildes).
+
+Pasos, en este orden:
+
+1. **Bajas:** por cada foto en Baja, sacar el producto del array `PRODUCTS` en `docs/js/data.js`, borrar `docs/assets/products/{SKU}.jpeg` y borrar la foto de Baja en Drive.
+2. **Altas:** por cada foto en Alta, buscar su fila en el Sheet por SKU, descargar la foto a `docs/assets/products/`, agregar el producto a `PRODUCTS` y mover la foto a Activas (copiar a Activas + borrar de Alta). Si la foto no tiene fila en el Sheet, avisar y no procesarla.
+3. Commit + push.
 
 ---
 
