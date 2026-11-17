@@ -681,12 +681,13 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .qty-control {
   display: flex;
   align-items: center;
-  border: 1.5px solid var(--epico-gris);
+  height: 48px;                /* misma altura exacta que el botón Agregar */
+  border: 2px solid var(--epico-gris);
   border-radius: var(--radius);
   overflow: hidden;
 }
 .qty-btn {
-  width: 36px; height: 45px;   /* + 1.5px de borde arriba y abajo = 48px, igual que el botón */
+  width: 36px; height: 100%;
   font-size: 1.1rem;
   transition: background .15s;
 }
@@ -699,6 +700,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 .btn-add-cart, .btn-add-curva {
   flex: 1;
+  height: 48px;
   min-height: 48px;
   padding: 12px 16px;
   background: transparent;
