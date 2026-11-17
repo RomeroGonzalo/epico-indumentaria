@@ -39,7 +39,7 @@ Para todas las respuestas y contenidos que generes, basate estrictamente en el s
 
 | Canal | Dato |
 |---|---|
-| **Instagram** | https://www.instagram.com/epico._indumentaria |
+| **Instagram** | https://www.instagram.com/indumentariaepico (antes era epico._indumentaria) |
 | **WhatsApp** | 3412268086 (o +54 9 341 226-8086) |
 
 ---
@@ -71,6 +71,7 @@ Manda la **Guía de marca para la web** (Quatra Estudio, nov. 2026, las chicas d
 
 - **Dos páginas:** `docs/index.html` (home: hero, nosotros, destacados, contacto; sin carrito) y `docs/catalogo.html` (paso 1 modalidad, filtros, catálogo completo, carrito y pedido por WhatsApp).
 - **JS:** `common.js` (carrusel, menú, header, zoom de fotos y `formatMoney`, en las dos páginas), `home.js` (destacados), `app.js` (catálogo y pedido), `catalog-loader.js` (lee el Sheet y llama a `initApp()` de la página que esté cargada).
+- **Carrito flotante:** en `catalogo.html` el botón flotante de abajo a la derecha es el carrito (con cantidad y total), no WhatsApp; en la home sigue el de WhatsApp.
 - **El catálogo arranca sin modalidad elegida** (`currentClientType = null`): la grilla queda bloqueada (`.is-locked`) y con precios de lista hasta que el cliente elige curva abierta o cerrada. Es a propósito, para que lean las condiciones.
 - **Destacados de la home:** columna **`Favoritos`** en la hoja que lee la web (la de `SHEET_CSV_URL` en `catalog-loader.js`, "Respuestas de formulario 1"). Cualquier cosa escrita (una X) lo marca; se muestran los primeros 20 marcados en el orden del Sheet. Si no hay ninguno marcado, muestra los primeros 8. Cada destacado linkea a `catalogo.html#p-SKU`: después de elegir modalidad, la página baja a ese producto.
 - Al modificar `docs/css/styles.css` o `docs/js/*.js`, actualizar el `?v=` en los `<link>`/`<script>` de `docs/index.html` (el hosting cachea 10 min y el navegador puede mezclar HTML nuevo con CSS viejo).

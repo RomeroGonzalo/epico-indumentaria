@@ -478,6 +478,7 @@ function renderCart() {
   cart.forEach(item => { item.unitPrice = calcPrice(item.basePrice, item.promoPrice); });
 
   cartCountEl.textContent = cart.reduce((s, i) => s + i.qty, 0);
+  updateCartFloat();
 
   if (cart.length === 0) {
     cartBody.innerHTML = `<div class="cart-empty-state"><span>🛒</span><p>Tu carrito está vacío</p></div>`;
@@ -597,9 +598,21 @@ document.getElementById('cartClose').addEventListener('click', closeCart);
 cartOverlay.addEventListener('click', closeCart);
 
 function bumpCartBadge() {
-  cartCountEl.classList.add('bump');
-  setTimeout(() => cartCountEl.classList.remove('bump'), 300);
+  [cartCountEl, cartFloat].forEach(el => el && el.classList.add('bump'));
+  setTimeout(() => [cartCountEl, cartFloat].forEach(el => el && el.classList.remove('bump')), 300);
 }
+
+// ---- Carrito flotante: con productos muestra cantidad y total ----
+const cartFloat = document.getElementById('cartFloat');
+function updateCartFloat() {
+  if (!cartFloat) return;
+  const count = cart.reduce((s, i) => s + i.qty, 0);
+  document.getElementById('cartFloatCount').textContent = count;
+  cartFloat.classList.toggle('has-items', count > 0);
+  document.getElementById('cartFloatText').textContent =
+    count > 0 ? `Ver tu pedido · ${formatMoney(getCartTotal())}` : 'Ver tu pedido';
+}
+if (cartFloat) cartFloat.addEventListener('click', openCart);
 
 // ---- Toast ----
 let toastTimer;

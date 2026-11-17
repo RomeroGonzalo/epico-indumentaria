@@ -1194,6 +1194,46 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .wapp-float:hover { transform: scale(1.06); background: var(--epico-verde-hover); }
 
 /* ============================================================
+   CARRITO FLOTANTE (catálogo)
+   ============================================================ */
+.cart-float {
+  position: fixed;
+  bottom: 24px; right: 24px;
+  z-index: 150;
+  height: 58px;
+  min-width: 58px;
+  padding: 0 17px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  background: var(--epico-negro);
+  color: var(--epico-blanco);
+  border-radius: 29px;
+  font-size: 15px;
+  font-weight: 600;
+  transition: transform .2s;
+}
+.cart-float:hover { transform: translateY(-2px); }
+.cart-float.bump { transform: scale(1.08); }
+.cart-float-text { display: none; white-space: nowrap; }
+.cart-float.has-items { padding: 0 20px 0 18px; }
+.cart-float.has-items .cart-float-text { display: inline; }
+.cart-float-badge {
+  position: absolute;
+  top: -6px; right: -4px;
+  min-width: 24px; height: 24px;
+  padding: 0 6px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--epico-verde);
+  color: var(--epico-negro);
+  border: 2px solid var(--epico-negro);
+  border-radius: 12px;
+  font-size: .75rem;
+  font-weight: 800;
+}
+.cart-float:not(.has-items) .cart-float-badge { display: none; }
+.cart-sidebar.open ~ .cart-float { display: none; }
+
+
+/* ============================================================
    STEPS TRACKER — guía de pedido flotante
    ============================================================ */
 .steps-tracker {
@@ -1345,4 +1385,13 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   .pillar { padding: 18px 16px; }
   .pillar-num { font-size: 1.8rem; margin-bottom: 12px; }
   .price-stamp { width: 96px; height: 96px; font-size: .95rem; }
+}
+
+/* Celular: la guía de pasos va arriba del carrito flotante y el aviso de
+   "agregado al carrito" arriba de la pantalla (va al final para ganarle
+   a las reglas de base de .steps-tracker y #cartToast) */
+@media (max-width: 600px) {
+  .cart-float { bottom: 16px; right: 16px; }
+  .steps-tracker { bottom: 86px; left: 16px; }
+  #cartToast { top: 96px; bottom: auto; left: 16px; right: 16px; max-width: none; }
 }
