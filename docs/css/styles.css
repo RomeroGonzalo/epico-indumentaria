@@ -602,6 +602,17 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
 .product-sku { font-size: .72rem; color: var(--epico-gris-texto); font-weight: 600; letter-spacing: .06em; }
 .product-name { font-size: 1.05rem; font-weight: 600; line-height: 1.25; margin-top: -6px; }
+/* En la grilla de varias columnas, el nombre siempre ocupa 2 renglones para que
+   los precios de una fila queden a la misma altura */
+@media (min-width: 481px) {
+  .product-name {
+    min-height: calc(2 * 1.25em);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
 
 .product-pricing { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
 .price-original {
@@ -662,7 +673,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
 .product-actions {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
   margin-top: auto;
   padding-top: 4px;
@@ -675,7 +686,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   overflow: hidden;
 }
 .qty-btn {
-  width: 36px; height: 44px;
+  width: 36px; height: 45px;   /* + 1.5px de borde arriba y abajo = 48px, igual que el botón */
   font-size: 1.1rem;
   transition: background .15s;
 }
@@ -749,6 +760,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   flex: 1;
 }
 .curva-info-group { display: flex; flex-direction: column; gap: 5px; }
+.variants-curva .product-actions { margin-top: 0; }
 .curva-label-text { font-size: .8rem; color: var(--epico-gris-texto); }
 .curva-label-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .curva-color-chips { display: flex; gap: 5px; flex-wrap: wrap; }
@@ -759,7 +771,19 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   display: inline-block;
   flex-shrink: 0;
 }
-.curva-colors-names { font-size: .82rem; font-weight: 600; }
+.curva-colors-names {
+  /* siempre en su propia línea y con lugar para 2 renglones, así todas las
+     tarjetas de una fila arrancan "Curva incluida" a la misma altura */
+  flex-basis: 100%;
+  font-size: .82rem;
+  font-weight: 600;
+  line-height: 1.35;
+  min-height: calc(2 * 1.35em);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 .curva-breakdown-row {
   font-size: .85rem;
   font-weight: 600;
@@ -769,6 +793,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 .curva-total-text { font-size: .8rem; color: var(--epico-gris-texto); }
 .curva-price-row {
+  margin-top: auto;            /* precio y botones quedan alineados abajo */
   display: flex;
   align-items: center;
   justify-content: space-between;
