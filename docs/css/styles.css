@@ -517,6 +517,48 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   gap: 24px 20px;
 }
 
+/* Catálogo bloqueado hasta elegir modalidad (paso 1) */
+.catalog-lock { display: none; }
+.catalog-section.is-locked .catalog-lock {
+  position: sticky;
+  top: 96px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  padding: 16px 20px;
+  background: var(--epico-blanco);
+  border: 2px solid var(--epico-negro);
+  border-radius: var(--radius-card);
+}
+.catalog-lock p { font-size: .95rem; flex: 1; min-width: 220px; }
+.catalog-section.is-locked .products-grid {
+  opacity: .4;
+  pointer-events: none;
+  user-select: none;
+}
+.price-mode-pill a { font-weight: 600; text-decoration: underline; }
+.price-mode-pill.is-empty { background: var(--epico-blanco); border: 1.5px dashed var(--epico-gris); }
+
+/* Producto al que se llega desde un destacado de la home */
+.product-card.is-highlight .product-img-wrap { outline: 3px solid var(--epico-azul); outline-offset: 3px; }
+
+/* Destacados de la home */
+.featured-note { font-size: .95rem; color: var(--epico-gris-texto); max-width: 380px; }
+.featured-note strong { color: var(--epico-negro); }
+.featured-card .product-info { gap: 6px; }
+.featured-card .product-name { margin-top: 0; }
+.featured-link { font-size: .9rem; font-weight: 600; width: fit-content; border-bottom: 2px solid var(--epico-negro); }
+.featured-link:hover { color: var(--epico-azul); border-color: var(--epico-azul); }
+.featured-more { display: flex; justify-content: center; margin-top: 48px; }
+
+/* CTA del header de la home */
+.main-nav a.header-cta, .main-nav a.header-cta:hover { border: none; padding: 8px 16px; min-height: 40px; font-size: .9rem; }
+.main-nav a[aria-current="page"] { border-color: var(--epico-negro); }
+
 /* PRODUCT CARD */
 .product-card {
   background: var(--epico-blanco);
@@ -1231,7 +1273,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 /* ============================================================
    RESPONSIVE
    ============================================================ */
-@media (max-width: 1000px) {
+@media (max-width: 1100px) {
   .header-direccion { display: none; }
 }
 
@@ -1261,6 +1303,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     border-bottom: 1px solid var(--line);
   }
   .main-nav.open { display: flex; }
+  .catalog-section.is-locked .catalog-lock { top: 80px; }
   .menu-toggle { display: flex; }
   .locations-grid { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; }

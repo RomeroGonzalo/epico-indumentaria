@@ -160,7 +160,10 @@ function rowToProduct(headers, cells, index) {
   // Precio promocional inválido (vacío, 0 o mayor/igual al de lista) se ignora.
   const validPromoPrice = (promoPrice > 0 && promoPrice < price) ? promoPrice : 0;
 
-  return { sku, name, category, price, promoPrice: validPromoPrice, emoji: pickEmoji(name), gradientFrom, gradientTo, colors, sizes, curve, image };
+  // Columna "Favoritos": cualquier cosa escrita (una X) lo marca como destacado de la home.
+  const favorite = get('favorit', 'destacad') !== '';
+
+  return { sku, name, category, price, promoPrice: validPromoPrice, emoji: pickEmoji(name), gradientFrom, gradientTo, colors, sizes, curve, image, favorite };
 }
 
 function parseSheetToProducts(csvText) {

@@ -69,6 +69,10 @@ Manda la **Guía de marca para la web** (Quatra Estudio, nov. 2026, las chicas d
 
 ## NOTAS TÉCNICAS DE LA WEB
 
+- **Dos páginas:** `docs/index.html` (home: hero, nosotros, destacados, contacto; sin carrito) y `docs/catalogo.html` (paso 1 modalidad, filtros, catálogo completo, carrito y pedido por WhatsApp).
+- **JS:** `common.js` (carrusel, menú, header, zoom de fotos y `formatMoney`, en las dos páginas), `home.js` (destacados), `app.js` (catálogo y pedido), `catalog-loader.js` (lee el Sheet y llama a `initApp()` de la página que esté cargada).
+- **El catálogo arranca sin modalidad elegida** (`currentClientType = null`): la grilla queda bloqueada (`.is-locked`) y con precios de lista hasta que el cliente elige curva abierta o cerrada. Es a propósito, para que lean las condiciones.
+- **Destacados de la home:** columna **`Favoritos`** en la hoja que lee la web (la de `SHEET_CSV_URL` en `catalog-loader.js`, "Respuestas de formulario 1"). Cualquier cosa escrita (una X) lo marca; se muestran los primeros 20 marcados en el orden del Sheet. Si no hay ninguno marcado, muestra los primeros 8. Cada destacado linkea a `catalogo.html#p-SKU`: después de elegir modalidad, la página baja a ese producto.
 - Al modificar `docs/css/styles.css` o `docs/js/*.js`, actualizar el `?v=` en los `<link>`/`<script>` de `docs/index.html` (el hosting cachea 10 min y el navegador puede mezclar HTML nuevo con CSS viejo).
 - Banners del hero: en `docs/assets/banners/` (WebP). Desktop 2880×1040 y versión mobile `*-mobile.webp` 1080×1350 (se usa en pantallas ≤600px vía `<picture>`).
 - Repo: github.com/RomeroGonzalo/epico-indumentaria. Se publica la carpeta `docs/` (dominio `epicoindumentaria.com` en `docs/CNAME`). Commit + push automático después de cada cambio.

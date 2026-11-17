@@ -3,7 +3,7 @@
 // ============================================================
 
 // ---- STATE ----
-let currentClientType = 'curva-abierta';
+let currentClientType = null; // el cliente tiene que elegir (paso 1)
 let currentFilter     = 'all';
 let cart              = [];
 
@@ -23,6 +23,7 @@ const pillText       = document.getElementById('pillText');
 const modalOverlay   = document.getElementById('modalOverlay');
 const btnFinalize    = document.getElementById('btnFinalize');
 const stepsTracker   = document.getElementById('stepsTracker');
+const catalogSection = document.getElementById('catalogo');
 
 // ============================================================
 // STEPS TRACKER — guía de pedido ("Cómo hacer tu pedido")
@@ -78,69 +79,28 @@ window.addEventListener('scroll', () => {
 updateStepsUI();
 
 // ============================================================
-// HERO CAROUSEL
-// ============================================================
-(function initCarousel() {
-  const slides  = document.querySelectorAll('.hero-slide');
-  const dots    = document.querySelectorAll('.slide-dots .dot');
-  let current   = 0;
-  let interval;
-
-  function goTo(index) {
-    slides[current].classList.remove('active');
-    dots[current].classList.remove('active');
-    current = (index + slides.length) % slides.length;
-    slides[current].classList.add('active');
-    dots[current].classList.add('active');
-  }
-
-  function startAuto() { interval = setInterval(() => goTo(current + 1), 5000); }
-  function resetAuto()  { clearInterval(interval); startAuto(); }
-
-  document.getElementById('slideNext').addEventListener('click', () => { goTo(current + 1); resetAuto(); });
-  document.getElementById('slidePrev').addEventListener('click', () => { goTo(current - 1); resetAuto(); });
-  dots.forEach(dot => dot.addEventListener('click', () => { goTo(+dot.dataset.index); resetAuto(); }));
-
-  // Swipe en mobile
-  const hero = document.querySelector('.hero-section');
-  let touchX = null;
-  hero.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
-  hero.addEventListener('touchend', e => {
-    if (touchX === null) return;
-    const dx = e.changedTouches[0].clientX - touchX;
-    touchX = null;
-    if (Math.abs(dx) > 40) { goTo(current + (dx < 0 ? 1 : -1)); resetAuto(); }
-  });
-
-  startAuto();
-})();
-
-// ============================================================
-// MOBILE MENU
-// ============================================================
-document.getElementById('menuToggle').addEventListener('click', function () {
-  document.getElementById('mainNav').classList.toggle('open');
-});
-
-// ============================================================
 // CLIENT TYPE SELECTOR
 // ============================================================
 document.querySelectorAll('input[name="clientType"]').forEach(radio => {
   radio.addEventListener('change', function () {
     currentClientType = this.value;
+    markStepDone(1);
     updatePriceUI();
+    goToPendingProduct();
     renderCart();
   });
 });
 
 function updatePriceUI() {
-  markStepDone(1);
   const ct      = CLIENT_TYPES[currentClientType];
   const isCurva = currentClientType === 'curva-cerrada';
 
-  // Pill en el catálogo
-  pillText.innerHTML = `Precios: <strong>${ct.label} (−${ct.discount * 100}%)</strong>`;
-  priceModePill.querySelector('.pill-icon').textContent = ct.icon;
+  // Hasta que elija la modalidad, el catálogo queda bloqueado
+  catalogSection.classList.toggle('is-locked', !ct);
+  priceModePill.classList.toggle('is-empty', !ct);
+  pillText.innerHTML = ct
+    ? `Precios: <strong>${ct.label} (−${ct.discount * 100}%)</strong> · <a href="#selectorCliente">cambiar</a>`
+    : 'Precios de lista. <strong>Elegí tu modalidad</strong> para ver tu descuento.';
 
   // Actualizar precios y modo en todas las tarjetas
   document.querySelectorAll('.product-card').forEach(card => {
@@ -154,7 +114,7 @@ function updatePriceUI() {
   });
 
   // Pill en el carrito
-  cartClientPill.textContent = `${ct.icon} ${ct.label}`;
+  cartClientPill.textContent = ct ? ct.label : 'Sin modalidad elegida';
 }
 
 // Un producto "oportunidad" trae precio promocional propio: ese precio ES
@@ -165,7 +125,8 @@ function hasPromo(promoPrice) {
 
 function calcPrice(basePrice, promoPrice) {
   if (hasPromo(promoPrice)) return Math.round(promoPrice);
-  return Math.round(basePrice * (1 - CLIENT_TYPES[currentClientType].discount));
+  const ct = CLIENT_TYPES[currentClientType];
+  return Math.round(basePrice * (1 - (ct ? ct.discount : 0)));
 }
 
 function updateCardPrice(card, basePrice) {
@@ -179,8 +140,8 @@ function updateCardPrice(card, basePrice) {
   const priceCurrent  = card.querySelector('.price-current');
   const discTag       = card.querySelector('.discount-tag');
   const savingTag     = card.querySelector('.saving-tag');
-  const showDiscount  = isPromo || ct.discount > 0;
-  const discountPct   = isPromo ? Math.round((1 - finalPrice / basePrice) * 100) : ct.discount * 100;
+  const showDiscount  = isPromo || (ct && ct.discount > 0);
+  const discountPct   = isPromo ? Math.round((1 - finalPrice / basePrice) * 100) : (ct ? ct.discount * 100 : 0);
 
   priceCurrent.textContent = formatMoney(finalPrice);
   const stamp = card.querySelector('.price-stamp');
@@ -227,6 +188,7 @@ function buildProductCard(p) {
   card.className        = 'product-card';
   card.dataset.category  = isPromo ? `${p.category}|oportunidades` : p.category;
   card.dataset.sku       = p.sku;
+  card.id                = 'p-' + p.sku;
   card.dataset.basePrice = p.price;
   card.dataset.promoPrice = p.promoPrice || 0;
 
@@ -237,8 +199,8 @@ function buildProductCard(p) {
   const pricePerCurva = finalPrice * totalInCurve;
   const ct            = CLIENT_TYPES[currentClientType];
   const isCurva        = currentClientType === 'curva-cerrada';
-  const showDiscount   = isPromo || ct.discount > 0;
-  const discountPct    = isPromo ? Math.round((1 - finalPrice / p.price) * 100) : ct.discount * 100;
+  const showDiscount   = isPromo || (ct && ct.discount > 0);
+  const discountPct    = isPromo ? Math.round((1 - finalPrice / p.price) * 100) : (ct ? ct.discount * 100 : 0);
   const savingUnit    = p.price - finalPrice;
   const savingCurva   = savingUnit * totalInCurve;
 
@@ -612,7 +574,7 @@ function renderCart() {
   }
 
   const ct = CLIENT_TYPES[currentClientType];
-  cartClientPill.textContent = `${ct.icon} ${ct.label}`;
+  cartClientPill.textContent = ct ? ct.label : 'Sin modalidad elegida';
 }
 
 // ---- Cart open/close ----
@@ -777,62 +739,34 @@ function buildWhatsAppMessage(name, phone, city, delivery, address) {
   return lines.join('\n');
 }
 
-// ============================================================
-// UTILS
-// ============================================================
-function formatMoney(n) {
-  return '$' + Math.round(n).toLocaleString('es-AR');
-}
-
-// ============================================================
-// HEADER SCROLL SHRINK
-// ============================================================
-(function initScrollHeader() {
-  const header = document.querySelector('.site-header');
-  window.addEventListener('scroll', () => {
-    header.classList.toggle('scrolled', window.scrollY > 60);
-  }, { passive: true });
-})();
-
-// ============================================================
-// IMAGE LIGHTBOX
-// ============================================================
-(function initLightbox() {
-  const lb = document.createElement('div');
-  lb.className = 'img-lightbox';
-  lb.innerHTML = '<button class="lightbox-close" aria-label="Cerrar">✕</button><img alt="">';
-  document.body.appendChild(lb);
-
-  const lbImg = lb.querySelector('img');
-
-  function open(src) {
-    lbImg.src = src;
-    lb.classList.add('visible');
-    document.body.style.overflow = 'hidden';
-  }
-  function close() {
-    lb.classList.remove('visible');
-    document.body.style.overflow = '';
-  }
-
-  lb.querySelector('.lightbox-close').addEventListener('click', close);
-  lb.addEventListener('click', e => { if (e.target === lb) close(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
-
-  document.addEventListener('click', e => {
-    const wrap = e.target.closest('.product-img-wrap');
-    if (!wrap) return;
-    const img = wrap.querySelector('.product-img');
-    if (img && img.src) open(img.src);
-  });
-})();
-
-// ============================================================
-// INIT
-// ============================================================
-// Se llama desde catalog-loader.js una vez que PRODUCTS está listo
-// (cargado desde Google Sheets o desde el catálogo de respaldo).
 function initApp() {
   renderCatalog();
   updatePriceUI();
 }
+
+// Si llegan desde un destacado de la home (catalogo.html#p-SKU), primero
+// tienen que elegir modalidad; después los llevamos a ese producto.
+let pendingSku = location.hash.startsWith('#p-') ? decodeURIComponent(location.hash.slice(3)) : null;
+if (pendingSku) {
+  history.replaceState(null, '', location.pathname);
+  window.scrollTo(0, 0);
+}
+function goToPendingProduct() {
+  const card = pendingSku && document.getElementById('p-' + pendingSku);
+  pendingSku = null;
+  const target = card || catalogSection;
+  setTimeout(() => {
+    target.scrollIntoView({ behavior: 'smooth', block: card ? 'center' : 'start' });
+    if (card) {
+      card.classList.add('is-highlight');
+      setTimeout(() => card.classList.remove('is-highlight'), 2400);
+    }
+  }, 150);
+}
+
+// Botón "Elegí tu modalidad" del aviso de catálogo bloqueado
+document.querySelectorAll('[data-goto-selector]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.getElementById('selectorCliente').scrollIntoView({ behavior: 'smooth' });
+  });
+});
