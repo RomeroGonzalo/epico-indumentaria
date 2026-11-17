@@ -183,6 +183,8 @@ function updateCardPrice(card, basePrice) {
   const discountPct   = isPromo ? Math.round((1 - finalPrice / basePrice) * 100) : ct.discount * 100;
 
   priceCurrent.textContent = formatMoney(finalPrice);
+  const stamp = card.querySelector('.price-stamp');
+  if (stamp) stamp.textContent = formatMoney(finalPrice);
 
   if (showDiscount) {
     const saving = isCurva
@@ -273,7 +275,8 @@ function buildProductCard(p) {
   card.innerHTML = `
     <div class="product-img-wrap">
       ${imgContent}
-      ${isPromo ? '<span class="promo-badge">🔥 Oferta</span>' : ''}
+      ${isPromo ? `<span class="promo-badge">oportunidad −${discountPct}%</span>` : ''}
+      <span class="price-stamp${isPromo ? ' is-promo' : ''}">${formatMoney(finalPrice)}</span>
     </div>
     <div class="product-info">
       <span class="product-sku">${p.sku}</span>
@@ -344,8 +347,15 @@ function buildProductCard(p) {
       sw.classList.add('active');
       card.querySelector('.selected-color-name').textContent = sw.dataset.color;
       if (sw.dataset.image) {
-        card.querySelector('.product-img-wrap').innerHTML =
-          `<img class="product-img" src="${sw.dataset.image}" alt="${sw.dataset.color}" decoding="async">`;
+        // Reemplazar solo la foto: el sello de precio y la cinta de promo quedan
+        const wrap = card.querySelector('.product-img-wrap');
+        const current = wrap.querySelector('.product-img, .product-placeholder');
+        const img = document.createElement('img');
+        img.className = 'product-img';
+        img.src = sw.dataset.image;
+        img.alt = sw.dataset.color;
+        img.decoding = 'async';
+        if (current) current.replaceWith(img); else wrap.prepend(img);
       }
     });
   });

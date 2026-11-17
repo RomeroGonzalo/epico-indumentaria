@@ -55,14 +55,15 @@ Para todas las respuestas y contenidos que generes, basate estrictamente en el s
 
 ## IDENTIDAD VISUAL
 
-- Logo principal: `assets/logo.png`
-- **Tipografía del logo:** bold, redondeada, estilo cómic/urbano — enérgica y juvenil.
-- **Colores principales:**
-  - Verde lima brillante `#39FF14` (texto "EPICO")
-  - Azul eléctrico `#1E90FF` (fondo/sombra del texto)
-  - Negro `#000000` (fondo y contorno)
-  - Blanco (subtítulo "INDUMENTARIA")
-- **Personalidad visual:** energética, llamativa, juvenil, urbana. Transmite dinamismo y actitud.
+Manda la **Guía de marca para la web** (Quatra Estudio, nov. 2026, las chicas de redes): `assets/Epico_Guia_Marca_Web.pdf`. Resumen:
+
+- **Logos:** `docs/assets/logo-color.png` (color principal con trama, fondo blanco → header) y `docs/assets/logo.png` (sobre negro → footer). Header 140–180 px de ancho en desktop, 110 px en celular, mínimo 96 px. No estirar ni recolorear.
+- **Colores:** verde `#25F61E`, azul `#0B7AEB` (botón azul `#0866CC`), lima promo `#C3F13B`, negro `#000`, gris claro `#EDEBEC` (fondos de sección y tarjetas), gris `#828688` (bordes), texto secundario `#5E6265`. Fondo general **blanco**. Verde/azul/lima solo en piezas chicas. **Nunca texto verde sobre blanco**; lima no va junto al verde. Sin degradés ni sombras.
+- **Tipografía:** solo Poppins. Títulos "de dos pesos": `<h2 class="titular"><span>Light</span><strong>Bold</strong></h2>` (letter-spacing −3% / −4,5%, interlineado .95). Precios en ExtraBold con −6%.
+- **Botones:** `.btn .btn-verde` (WhatsApp, uno por pantalla), `.btn .btn-azul` (Cómo llegar), `.btn .btn-borde` (navegación). 48 px de alto, radio 6 px. Textos en voseo, nunca "Click aquí".
+- **Elementos:** sello de precio dentado `.price-stamp` (verde; `.is-promo` lima) abajo a la derecha de la foto; pastilla de dirección `.direccion` (azul, o `.direccion-lima` sobre oscuro); cinta de promo lima inclinada `.promo-badge`.
+- Escribir siempre "San Luis" y "Wide leg". Horario: lunes a sábados de 9 a 18 hs, de corrido.
+- Los banners del hero son imágenes que hacen las chicas de redes; el estilo de la web no los toca.
 
 ---
 
